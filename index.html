@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sobrevive en el espacio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stars lejos" aria-hidden="true"></div>
+  <div class="stars cerca" aria-hidden="true"></div>
+
+  <main class="inicio">
+    <header>
+      <h1>Sobrevive<br>en el espacio</h1>
+      <p class="sub">Cuida la energía, el oxígeno y el escudo de tu base. ¡Cada decisión cuesta algo!</p>
+    </header>
+
+    <img class="astro" src="assets/nave-pixel.png" alt="Astronauta flotando en el espacio" width="500" height="660">
+
+    <button id="jugar" class="btn" type="button">▶ Jugar</button>
+  </main>
+
+  <div id="aviso" class="aviso" hidden>
+    <div class="aviso-caja">
+      <h2>¡Despegamos! 🚀</h2>
+      <p>Aquí se conectará la pantalla de misión.<br>
+         Cuando tengas tu juego, pon su dirección en <code>main.js</code> (<code>URL_JUEGO</code>).</p>
+      <button id="volver" class="btn chico" type="button">Volver al inicio</button>
+    </div>
+  </div>
+
+  <footer>Inspirado en datos abiertos de la NASA</footer>
+  <script src="main.js"></script>
+</body>
+</html>
