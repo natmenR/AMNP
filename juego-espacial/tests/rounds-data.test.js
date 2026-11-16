@@ -112,13 +112,10 @@ test('round-04 no contiene emojis, porcentajes o nombres de agencias en sus text
     round04.fact.text,
   ].join(' ');
 
-  // No emojis
   const emojiRegex = /[\p{Extended_Pictographic}]/u;
   assert.equal(emojiRegex.test(allTexts), false, 'No debe haber emojis');
 
-  // No percentages
   assert.equal(allTexts.includes('%'), false, 'No debe haber porcentajes');
 
-  // No NASA, DONKI, OSDR
   assert.equal(/NASA|DONKI|OSDR/i.test(allTexts), false, 'No debe mencionar agencias o acronimos');
 });

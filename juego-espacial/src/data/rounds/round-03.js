@@ -1,10 +1,3 @@
-/**
- * ROUND 3 · Solar Conjunction
- *
- * @typedef {import('./round-01.js').Round} Round
- */
-
-/** @type {Round} */
 export const round03 = {
   id: 'round-03',
   number: 3,

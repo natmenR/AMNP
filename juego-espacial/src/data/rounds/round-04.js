@@ -1,22 +1,3 @@
-/**
- * ROUND 4 · Return Home (Final Round)
- *
- * The crew blasts off from Martian orbit and flies back to Earth.
- *
- * @typedef {import('../../ui/letter.js').LetterPage} LetterPage
- * @typedef {{ type: string, intro: string, config?: object }} MinigameSpec
- * @typedef {{ id: string, label: string, minigame: MinigameSpec, outcomes: Record<string, string> }} RoundOption
- * @typedef {{ text: string, tone: 'good'|'mixed'|'bad', effects: import('../../core/resources.js').Effects }} Outcome
- * @typedef {{
- *   id: string, number: number, title: string, speaker: string, alert: boolean,
- *   report: { pages: LetterPage[], liveData: boolean },
- *   decision: { pages: LetterPage[], title: string, prompt: string, options: RoundOption[] },
- *   outcomes: Record<string, Outcome>,
- *   fact: { title: string, text: string }
- * }} Round
- */
-
-/** @type {Round} */
 export const round04 = {
   id: 'round-04',
   number: 4,

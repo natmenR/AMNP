@@ -1,11 +1,4 @@
 
-/**
- * ROUND 2 · Mars Terrain Reconnaissance (Rover Science Collection)
- *
- * @typedef {import('./round-01.js').Round} Round
- */
-
-/** @type {Round} */
 export const round02 = {
   id: 'round-02',
   number: 2,
