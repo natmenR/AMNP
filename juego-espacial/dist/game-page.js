@@ -178,15 +178,6 @@
     }
   };
 
-<<<<<<< HEAD
-  // src/data/rounds/round-04.js
-  var round04 = {
-    id: "round-04",
-    number: 4,
-    title: "Return Home",
-    speaker: "Ship System",
-    alert: true,
-=======
   // src/data/rounds/round-02.js
   var round02 = {
     id: "round-02",
@@ -194,48 +185,17 @@
     title: "Solar Conjunction",
     speaker: "Ship System",
     alert: false,
->>>>>>> d94da9b (Agrego ronda 2 de conjuncion solar)
     report: {
       liveData: false,
       pages: [
         {
-<<<<<<< HEAD
-          text: "Mission complete on Mars! Our cargo bay is packed with red rocks and science samples, and it is time to fly home to Earth.",
-          notes: [{ term: "Alert", text: "Engines ready. Set course for Earth." }]
-=======
           text: "Later in the mission, your crew is working at the Mars habitat. The Sun is between Earth and Mars, and its outer atmosphere can disturb radio signals. Mission Control has paused new commands for two weeks."
->>>>>>> d94da9b (Agrego ronda 2 de conjuncion solar)
         }
       ]
     },
     decision: {
       pages: [
         {
-<<<<<<< HEAD
-          text: "To escape Mars, our rockets need a huge burst of power. At the same time, invisible space rays are shooting across our path, and our water tanks are the best shield we have."
-        }
-      ],
-      title: "Ready for Blast-Off",
-      prompt: "Water protects us from space rays, but heavy water tanks make the rocket harder to lift. How should we prepare the ship for the trip home?",
-      options: [
-        {
-          id: "heavy-shield",
-          label: "Keep the Heavy Water Shield: Keep all water tanks full around the cabin to block space rays, even though the extra weight uses up a lot of battery power.",
-          minigame: {
-            type: "shieldZap",
-            intro: "Space rays are heading toward the cabin. Tap the incoming rays to block them before they hit the ship."
-          },
-          outcomes: { win: "shield-win", lose: "shield-lose" }
-        },
-        {
-          id: "light-rocket",
-          label: "Fly Light and Fast: Drop extra cargo and water to make the rocket super light and save battery power, leaving a thinner shield for the trip home.",
-          minigame: {
-            type: "rocketBoost",
-            intro: "Time to launch! Hit the launch button when the power bar reaches the green zone to blast away from Mars."
-          },
-          outcomes: { win: "boost-win", lose: "boost-lose" }
-=======
           text: "Your instruments and manuals still work. Choose how to keep the base running while Earth is quiet."
         }
       ],
@@ -259,37 +219,10 @@
             intro: "Three alarms need your attention. Read the onboard manual and choose a safe action for each alarm."
           },
           outcomes: { win: "drill-win", lose: "drill-lose" }
->>>>>>> d94da9b (Agrego ronda 2 de conjuncion solar)
         }
       ]
     },
     outcomes: {
-<<<<<<< HEAD
-      "shield-win": {
-        tone: "good",
-        text: "Great job! The water shield blocked the space rays and kept the crew safe, though lifting all that water drained a lot of battery power.",
-        effects: { energy: -20, shielding: 15 }
-      },
-      "shield-lose": {
-        tone: "mixed",
-        text: "Some space rays slipped past the shield and drained our systems, and the heavy ship used up a lot of battery power.",
-        effects: { energy: -30, lifeSupport: -10, shielding: 10 }
-      },
-      "boost-win": {
-        tone: "good",
-        text: "Awesome launch! The light rocket shot toward Earth with plenty of battery left, though the thinner shield let a little space radiation through.",
-        effects: { energy: -5, shielding: -10 }
-      },
-      "boost-lose": {
-        tone: "bad",
-        text: "Rough takeoff! We burned extra battery fighting Mars gravity, and our thinner shield barely held back the space rays.",
-        effects: { energy: -25, lifeSupport: -15, shielding: -10 }
-      }
-    },
-    fact: {
-      title: "Space Science Note",
-      text: "Water is a great shield in space because it blocks invisible rays from the Sun and deep space. Since water is very heavy, astronauts always have to balance carrying enough water for safety against saving rocket power to get home."
-=======
       "kit-win": {
         tone: "good",
         text: "Your crew used the offline files to check the base. When the signal returned, you sent your mission log to Earth.",
@@ -314,16 +247,84 @@
     fact: {
       title: "Based on a true story",
       text: "During solar conjunction, NASA plans tasks in advance so its Mars rovers can keep working while new radio commands are paused."
->>>>>>> d94da9b (Agrego ronda 2 de conjuncion solar)
+    }
+  };
+
+  // src/data/rounds/round-04.js
+  var round04 = {
+    id: "round-04",
+    number: 4,
+    title: "Return Home",
+    speaker: "Ship System",
+    alert: true,
+    report: {
+      liveData: false,
+      pages: [
+        {
+          text: "Mission complete on Mars! Our cargo bay is packed with red rocks and science samples, and it is time to fly home to Earth.",
+          notes: [{ term: "Alert", text: "Engines ready. Set course for Earth." }]
+        }
+      ]
+    },
+    decision: {
+      pages: [
+        {
+          text: "To escape Mars, our rockets need a huge burst of power. At the same time, invisible space rays are shooting across our path, and our water tanks are the best shield we have."
+        }
+      ],
+      title: "Ready for Blast-Off",
+      prompt: "Water protects us from space rays, but heavy water tanks make the rocket harder to lift. How should we prepare the ship for the trip home?",
+      options: [
+        {
+          id: "heavy-shield",
+          label: "Keep the Heavy Water Shield: Keep all water tanks full around the cabin to block space rays, even though the extra weight uses up a lot of battery power.",
+          minigame: {
+            type: "shieldZap",
+            intro: "Space rays are heading toward the cabin. Tap the incoming rays to block them before they hit the ship."
+          },
+          outcomes: { win: "shield-win", lose: "shield-lose" }
+        },
+        {
+          id: "light-rocket",
+          label: "Fly Light and Fast: Drop extra cargo and water to make the rocket super light and save battery power, leaving a thinner shield for the trip home.",
+          minigame: {
+            type: "rocketBoost",
+            intro: "Time to launch! Hit the launch button when the power bar reaches the green zone to blast away from Mars."
+          },
+          outcomes: { win: "boost-win", lose: "boost-lose" }
+        }
+      ]
+    },
+    outcomes: {
+      "shield-win": {
+        tone: "good",
+        text: "Great job! The water shield blocked the space rays and kept the crew safe, though lifting all that water drained a lot of battery power.",
+        effects: { energy: -20, shielding: 15 }
+      },
+      "shield-lose": {
+        tone: "mixed",
+        text: "Some space rays slipped past the shield and drained our systems, and the heavy ship used up a lot of battery power.",
+        effects: { energy: -30, lifeSupport: -10, shielding: 10 }
+      },
+      "boost-win": {
+        tone: "good",
+        text: "Awesome launch! The light rocket shot toward Earth with plenty of battery left, though the thinner shield let a little space radiation through.",
+        effects: { energy: -5, shielding: -10 }
+      },
+      "boost-lose": {
+        tone: "bad",
+        text: "Rough takeoff! We burned extra battery fighting Mars gravity, and our thinner shield barely held back the space rays.",
+        effects: { energy: -25, lifeSupport: -15, shielding: -10 }
+      }
+    },
+    fact: {
+      title: "Space Science Note",
+      text: "Water is a great shield in space because it blocks invisible rays from the Sun and deep space. Since water is very heavy, astronauts always have to balance carrying enough water for safety against saving rocket power to get home."
     }
   };
 
   // src/data/rounds/index.js
-<<<<<<< HEAD
-  var ROUNDS = [round01, round04];
-=======
-  var ROUNDS = [round01, round02];
->>>>>>> d94da9b (Agrego ronda 2 de conjuncion solar)
+  var ROUNDS = [round01, round02, round04];
 
   // src/services/storage.js
   function readString(key) {
@@ -773,123 +774,6 @@
     });
   }
 
-  // src/minigames/solar-conjunction.js
-  function openPuzzle(container, title, instructions) {
-    const board = el("div", { class: "card-row" });
-    const controls = el("div", { class: "mg-controls" });
-    const status = el("p", { class: "mg-status", role: "status" });
-    const root = el(
-      "div",
-      { class: "minigame flight" },
-      el("h2", { class: "mg-title", tabindex: "-1" }, title),
-      el("p", { class: "mg-help" }, instructions),
-      board,
-      controls,
-      status
-    );
-    mount(container, root);
-    focusTitle(root);
-    return { board, controls, status };
-  }
-  function button(label, click) {
-    return el("button", {
-      class: "mg-button",
-      type: "button",
-      on: { click }
-    }, label);
-  }
-  function runOfflineKit(container) {
-    return new Promise((resolve) => {
-      const { board, controls, status } = openPuzzle(
-        container,
-        "Pack an Offline Kit",
-        "Fit instructions, daily checks, and a report template into six storage units."
-      );
-      const files = [
-        ["Safety checklist", 2, true],
-        ["Rover photo album", 3, false],
-        ["Base manual", 2, true],
-        ["Crew movie", 4, false],
-        ["Mission log", 2, true]
-      ];
-      const packed = /* @__PURE__ */ new Set();
-      let used = 0;
-      status.textContent = "Storage: 0 / 6";
-      files.forEach(([label, size], index) => {
-        const control = button(`${label} (${size})`, () => {
-          if (packed.delete(index)) {
-            used -= size;
-          } else if (used + size <= 6) {
-            packed.add(index);
-            used += size;
-          } else {
-            status.textContent = `That file will not fit. Storage: ${used} / 6`;
-            return;
-          }
-          const saved = packed.has(index);
-          control.setAttribute("aria-pressed", String(saved));
-          control.textContent = `${saved ? "Saved: " : ""}${label} (${size})`;
-          status.textContent = `Storage: ${used} / 6`;
-        });
-        control.setAttribute("aria-pressed", "false");
-        board.append(control);
-      });
-      controls.append(button("Test Offline Kit", () => {
-        const win = files.every((file, index) => !file[2] || packed.has(index));
-        resolve({ result: win ? "win" : "lose", stats: { files: packed.size } });
-      }));
-    });
-  }
-  function runHabitatDrill(container) {
-    return new Promise((resolve) => {
-      const { board, controls, status } = openPuzzle(
-        container,
-        "Run the Habitat Drill",
-        "EARTH RADIO OFFLINE. Read the onboard manual and respond to each alarm."
-      );
-      const alarms = [
-        ["Airflow is low.", "A blocked filter can slow the airflow.", "Replace the air filter"],
-        ["The habitat is getting cold.", "The backup heater can warm the habitat.", "Start the backup heater"],
-        ["The battery reserve is low.", "Keep essential systems on and pause optional work.", "Pause the science lab"]
-      ];
-      const panel = el("p", { class: "panel" });
-      board.append(panel);
-      let fixed = 0;
-      let errors = 0;
-      function showAlarm() {
-        const [warning, clue] = alarms[fixed];
-        panel.textContent = `Alarm ${fixed + 1} / ${alarms.length}: ${warning} Manual: ${clue}`;
-      }
-      showAlarm();
-      const actions = [
-        "Start the backup heater",
-        "Pause the science lab",
-        "Replace the air filter"
-      ];
-      actions.forEach((action) => {
-        controls.append(button(action, () => {
-          if (fixed === alarms.length || errors === 2) return;
-          if (action === alarms[fixed][2]) {
-            fixed += 1;
-            if (fixed === alarms.length) {
-              resolve({ result: "win", stats: { fixed, errors } });
-              return;
-            }
-            showAlarm();
-            status.textContent = "System restored. Check the next alarm.";
-          } else {
-            errors += 1;
-            if (errors === 2) {
-              resolve({ result: "lose", stats: { fixed, errors } });
-              return;
-            }
-            status.textContent = "That did not clear the alarm. Read the manual and try again.";
-          }
-        }));
-      });
-    });
-  }
-
   // src/minigames/shield-zap.js
   var ZAP_GOAL = 6;
   var GAME_DURATION = 18;
@@ -1119,29 +1003,141 @@
     });
   }
 
+  // src/minigames/solar-conjunction.js
+  function openPuzzle(container, title, instructions) {
+    const board = el("div", { class: "card-row" });
+    const controls = el("div", { class: "mg-controls" });
+    const status = el("p", { class: "mg-status", role: "status" });
+    const root = el(
+      "div",
+      { class: "minigame flight" },
+      el("h2", { class: "mg-title", tabindex: "-1" }, title),
+      el("p", { class: "mg-help" }, instructions),
+      board,
+      controls,
+      status
+    );
+    mount(container, root);
+    focusTitle(root);
+    return { board, controls, status };
+  }
+  function button(label, click) {
+    return el("button", {
+      class: "mg-button",
+      type: "button",
+      on: { click }
+    }, label);
+  }
+  function runOfflineKit(container) {
+    return new Promise((resolve) => {
+      const { board, controls, status } = openPuzzle(
+        container,
+        "Pack an Offline Kit",
+        "Fit instructions, daily checks, and a report template into six storage units."
+      );
+      const files = [
+        ["Safety checklist", 2, true],
+        ["Rover photo album", 3, false],
+        ["Base manual", 2, true],
+        ["Crew movie", 4, false],
+        ["Mission log", 2, true]
+      ];
+      const packed = /* @__PURE__ */ new Set();
+      let used = 0;
+      status.textContent = "Storage: 0 / 6";
+      files.forEach(([label, size], index) => {
+        const control = button(`${label} (${size})`, () => {
+          if (packed.delete(index)) {
+            used -= size;
+          } else if (used + size <= 6) {
+            packed.add(index);
+            used += size;
+          } else {
+            status.textContent = `That file will not fit. Storage: ${used} / 6`;
+            return;
+          }
+          const saved = packed.has(index);
+          control.setAttribute("aria-pressed", String(saved));
+          control.textContent = `${saved ? "Saved: " : ""}${label} (${size})`;
+          status.textContent = `Storage: ${used} / 6`;
+        });
+        control.setAttribute("aria-pressed", "false");
+        board.append(control);
+      });
+      controls.append(button("Test Offline Kit", () => {
+        const win = files.every((file, index) => !file[2] || packed.has(index));
+        resolve({ result: win ? "win" : "lose", stats: { files: packed.size } });
+      }));
+    });
+  }
+  function runHabitatDrill(container) {
+    return new Promise((resolve) => {
+      const { board, controls, status } = openPuzzle(
+        container,
+        "Run the Habitat Drill",
+        "EARTH RADIO OFFLINE. Read the onboard manual and respond to each alarm."
+      );
+      const alarms = [
+        ["Airflow is low.", "A blocked filter can slow the airflow.", "Replace the air filter"],
+        ["The habitat is getting cold.", "The backup heater can warm the habitat.", "Start the backup heater"],
+        ["The battery reserve is low.", "Keep essential systems on and pause optional work.", "Pause the science lab"]
+      ];
+      const panel = el("p", { class: "panel" });
+      board.append(panel);
+      let fixed = 0;
+      let errors = 0;
+      function showAlarm() {
+        const [warning, clue] = alarms[fixed];
+        panel.textContent = `Alarm ${fixed + 1} / ${alarms.length}: ${warning} Manual: ${clue}`;
+      }
+      showAlarm();
+      const actions = [
+        "Start the backup heater",
+        "Pause the science lab",
+        "Replace the air filter"
+      ];
+      actions.forEach((action) => {
+        controls.append(button(action, () => {
+          if (fixed === alarms.length || errors === 2) return;
+          if (action === alarms[fixed][2]) {
+            fixed += 1;
+            if (fixed === alarms.length) {
+              resolve({ result: "win", stats: { fixed, errors } });
+              return;
+            }
+            showAlarm();
+            status.textContent = "System restored. Check the next alarm.";
+          } else {
+            errors += 1;
+            if (errors === 2) {
+              resolve({ result: "lose", stats: { fixed, errors } });
+              return;
+            }
+            status.textContent = "That did not clear the alarm. Read the manual and try again.";
+          }
+        }));
+      });
+    });
+  }
+
   // src/minigames/types.js
-<<<<<<< HEAD
-  var MINIGAME_TYPES = Object.freeze(["manualFlight", "dataCheck", "shieldZap", "rocketBoost"]);
-=======
   var MINIGAME_TYPES = Object.freeze([
     "manualFlight",
     "dataCheck",
+    "shieldZap",
+    "rocketBoost",
     "offlineKit",
     "habitatDrill"
   ]);
->>>>>>> d94da9b (Agrego ronda 2 de conjuncion solar)
 
   // src/minigames/index.js
   var MINIGAMES = {
     manualFlight: runManualFlight,
     dataCheck: runDataCheck,
-<<<<<<< HEAD
     shieldZap: runShieldZap,
-    rocketBoost: runRocketBoost
-=======
+    rocketBoost: runRocketBoost,
     offlineKit: runOfflineKit,
     habitatDrill: runHabitatDrill
->>>>>>> d94da9b (Agrego ronda 2 de conjuncion solar)
   };
   for (const type of MINIGAME_TYPES) {
     if (!MINIGAMES[type]) throw new Error("Minigame not registered: " + type);
