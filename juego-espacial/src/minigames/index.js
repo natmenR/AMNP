@@ -1,5 +1,10 @@
 import { runDataCheck } from './data-check.js';
 import { runManualFlight } from './flight.js';
+import {
+  runMarsRoverDrive,
+  runMarsRoutePlanner,
+  runMarsRadarScan,
+} from './mars-recon.js';
 import { runShieldZap } from './shield-zap.js';
 import { runRocketBoost } from './rocket-boost.js';
 import { runOfflineKit, runHabitatDrill } from './solar-conjunction.js';
