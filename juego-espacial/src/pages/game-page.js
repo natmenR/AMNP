@@ -53,8 +53,6 @@ async function runGame() {
     }
   }
 
-  // The mission is finished when the last round in the array is the designated final round.
-  // This stays correct whether teammates have filled in rounds 2-3 or not.
   const lastRound = ROUNDS[ROUNDS.length - 1];
   const finished = lastRound.number >= GAME.totalRounds;
   finishScreen({

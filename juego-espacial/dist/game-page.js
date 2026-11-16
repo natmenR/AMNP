@@ -180,152 +180,211 @@
 
   // src/data/rounds/round-02.js
   var round02 = {
-    id: 'round-02',
-  number: 2,
-  title: 'MARS TERRAIN RECONNAISSANCE',
-  speaker: 'AURA',
-  alert: false,
-
-  report: {
-    liveData: false,
-    pages: [
-      {
-        text: 'MISSION LOG — DAY 980. After months of travel, your crew has reached Mars. The habitat is operational, but the surrounding terrain remains largely unexplored.',
-      },
-      {
-        text: 'AURA: Commander, our orbital maps are incomplete. Rocky formations, unstable ground, and unknown surface conditions could threaten future expeditions.',
-      },
-      {
-        text: 'MISSION CONTROL: Your next objective is to identify three scientific locations and gather enough information to establish a safe exploration route.',
-      },
-      {
-        text: 'AURA: Our rover has limited battery capacity. Every movement, scan, and navigation decision must be carefully planned.',
-      },
-    ],
-  },
-
-  decision: {
-    pages: [
-      {
-        text: 'AURA: I have identified three possible reconnaissance strategies. Each one offers different advantages and risks.',
-      },
-      {
-        text: 'MISSION CONTROL: Choose your approach carefully. Your decision will determine how the crew explores the Martian surface.',
-      },
-    ],
-
-    title: 'Round 2',
-    prompt: 'How will you explore the Martian terrain?',
-
-    options: [
-      {
-        id: 'rocky-shortcut',
-        label: 'A — Rocky Shortcut',
-        minigame: {
-          type: 'marsRoverDrive',
-          intro: 'Drive the rover across the Martian surface. Reach and scan all three scientific sites, manage your battery, and return safely to the habitat.',
+    id: "round-02",
+    number: 2,
+    title: "MARS TERRAIN RECONNAISSANCE",
+    speaker: "AURA",
+    alert: false,
+    report: {
+      liveData: false,
+      pages: [
+        {
+          text: "MISSION LOG \u2014 DAY 980. After months of travel, your crew has reached Mars. The habitat is operational, but the surrounding terrain remains largely unexplored."
         },
-        outcomes: {
-          win: 'rover-win',
-          lose: 'rover-lose',
+        {
+          text: "AURA: Commander, our orbital maps are incomplete. Rocky formations, unstable ground, and unknown surface conditions could threaten future expeditions."
         },
-      },
-
-      {
-        id: 'surveyed-corridor',
-        label: 'B — Surveyed Corridor',
-        minigame: {
-          type: 'marsRoutePlanner',
-          intro: 'Plan an efficient route between the three scientific sites. Consider terrain costs, available battery, and the safest path back to the habitat.',
+        {
+          text: "MISSION CONTROL: Your next objective is to identify three scientific locations and gather enough information to establish a safe exploration route."
         },
-        outcomes: {
-          win: 'planner-win',
-          lose: 'planner-lose',
+        {
+          text: "AURA: Our rover has limited battery capacity. Every movement, scan, and navigation decision must be carefully planned."
+        }
+      ]
+    },
+    decision: {
+      pages: [
+        {
+          text: "AURA: I have identified three possible reconnaissance strategies. Each one offers different advantages and risks."
         },
-      },
-
-      {
-        id: 'remote-mapping',
-        label: 'C — Remote Mapping',
-        minigame: {
-          type: 'marsRadarScan',
-          intro: 'Operate the remote radar system. Adjust its orientation, scan the terrain, and classify the detected sectors using a limited number of attempts.',
+        {
+          text: "MISSION CONTROL: Choose your approach carefully. Your decision will determine how the crew explores the Martian surface."
+        }
+      ],
+      title: "Round 2",
+      prompt: "How will you explore the Martian terrain?",
+      options: [
+        {
+          id: "rocky-shortcut",
+          label: "A \u2014 Rocky Shortcut",
+          minigame: {
+            type: "marsRoverDrive",
+            intro: "Drive the rover across the Martian surface. Reach and scan all three scientific sites, manage your battery, and return safely to the habitat."
+          },
+          outcomes: {
+            win: "rover-win",
+            lose: "rover-lose"
+          }
         },
-        outcomes: {
-          win: 'radar-win',
-          lose: 'radar-lose',
+        {
+          id: "surveyed-corridor",
+          label: "B \u2014 Surveyed Corridor",
+          minigame: {
+            type: "marsRoutePlanner",
+            intro: "Plan an efficient route between the three scientific sites. Consider terrain costs, available battery, and the safest path back to the habitat."
+          },
+          outcomes: {
+            win: "planner-win",
+            lose: "planner-lose"
+          }
         },
-      },
-    ],
-  },
-
-  outcomes: {
-    'rover-win': {
-      tone: 'good',
-      text: 'AURA: Reconnaissance complete. The rover successfully scanned all three scientific sites and returned to the habitat. Your crew now has valuable terrain data for future expeditions.',
-      effects: {
-        energy: -5,
-        lifeSupport: 0,
-        shielding: 0,
-      },
+        {
+          id: "remote-mapping",
+          label: "C \u2014 Remote Mapping",
+          minigame: {
+            type: "marsRadarScan",
+            intro: "Operate the remote radar system. Adjust its orientation, scan the terrain, and classify the detected sectors using a limited number of attempts."
+          },
+          outcomes: {
+            win: "radar-win",
+            lose: "radar-lose"
+          }
+        }
+      ]
     },
-
-    'rover-lose': {
-      tone: 'mixed',
-      text: 'AURA: The rover expedition encountered unexpected difficulties. Additional resources were required to recover the mission, and some scientific observations remain incomplete.',
-      effects: {
-        energy: -12,
-        lifeSupport: -3,
-        shielding: 0,
+    outcomes: {
+      "rover-win": {
+        tone: "good",
+        text: "AURA: Reconnaissance complete. The rover successfully scanned all three scientific sites and returned to the habitat. Your crew now has valuable terrain data for future expeditions.",
+        effects: {
+          energy: -5,
+          lifeSupport: 0,
+          shielding: 0
+        }
       },
-    },
-
-    'planner-win': {
-      tone: 'good',
-      text: 'MISSION CONTROL: Excellent navigation planning. Your selected route minimized unnecessary movement, allowing the rover to complete its scientific survey while preserving valuable energy.',
-      effects: {
-        energy: -3,
-        lifeSupport: 0,
-        shielding: 0,
+      "rover-lose": {
+        tone: "mixed",
+        text: "AURA: The rover expedition encountered unexpected difficulties. Additional resources were required to recover the mission, and some scientific observations remain incomplete.",
+        effects: {
+          energy: -12,
+          lifeSupport: -3,
+          shielding: 0
+        }
       },
-    },
-
-    'planner-lose': {
-      tone: 'mixed',
-      text: 'AURA: The planned route proved inefficient. The rover consumed additional energy while navigating difficult terrain, forcing the crew to adjust the expedition.',
-      effects: {
-        energy: -10,
-        lifeSupport: -2,
-        shielding: 0,
+      "planner-win": {
+        tone: "good",
+        text: "MISSION CONTROL: Excellent navigation planning. Your selected route minimized unnecessary movement, allowing the rover to complete its scientific survey while preserving valuable energy.",
+        effects: {
+          energy: -3,
+          lifeSupport: 0,
+          shielding: 0
+        }
       },
-    },
-
-    'radar-win': {
-      tone: 'good',
-      text: 'AURA: Remote terrain analysis complete. The radar successfully identified the relevant surface sectors, allowing the crew to gather scientific information without exposing the rover to hazardous terrain.',
-      effects: {
-        energy: -4,
-        lifeSupport: 0,
-        shielding: 0,
+      "planner-lose": {
+        tone: "mixed",
+        text: "AURA: The planned route proved inefficient. The rover consumed additional energy while navigating difficult terrain, forcing the crew to adjust the expedition.",
+        effects: {
+          energy: -10,
+          lifeSupport: -2,
+          shielding: 0
+        }
       },
-    },
-
-    'radar-lose': {
-      tone: 'mixed',
-      text: 'AURA: The radar survey produced incomplete results. Several sectors remain uncertain, and additional scans will be necessary before the crew can safely explore the area.',
-      effects: {
-        energy: -8,
-        lifeSupport: 0,
-        shielding: -3,
+      "radar-win": {
+        tone: "good",
+        text: "AURA: Remote terrain analysis complete. The radar successfully identified the relevant surface sectors, allowing the crew to gather scientific information without exposing the rover to hazardous terrain.",
+        effects: {
+          energy: -4,
+          lifeSupport: 0,
+          shielding: 0
+        }
       },
+      "radar-lose": {
+        tone: "mixed",
+        text: "AURA: The radar survey produced incomplete results. Several sectors remain uncertain, and additional scans will be necessary before the crew can safely explore the area.",
+        effects: {
+          energy: -8,
+          lifeSupport: 0,
+          shielding: -3
+        }
+      }
     },
-  },
+    fact: {
+      title: "Based on a true story",
+      text: "NASA Mars rovers use onboard navigation systems, cameras, and scientific instruments to investigate the Martian surface. Because communication with Earth involves delays, rovers can perform certain navigation tasks autonomously while mission teams plan their exploration routes."
+    }
+  };
 
-  fact: {
-    title: 'Based on a true story',
-    text: 'NASA Mars rovers use onboard navigation systems, cameras, and scientific instruments to investigate the Martian surface. Because communication with Earth involves delays, rovers can perform certain navigation tasks autonomously while mission teams plan their exploration routes.',
-  },
-};
+  // src/data/rounds/round-03.js
+  var round03 = {
+    id: "round-03",
+    number: 3,
+    title: "Solar Conjunction",
+    speaker: "Ship System",
+    alert: false,
+    report: {
+      liveData: false,
+      pages: [
+        {
+          text: "Later in the mission, your crew is working at the Mars habitat. The Sun is between Earth and Mars, and its outer atmosphere can disturb radio signals. Mission Control has paused new commands for two weeks."
+        }
+      ]
+    },
+    decision: {
+      pages: [
+        {
+          text: "Your instruments and manuals still work. Choose how to keep the base running while Earth is quiet."
+        }
+      ],
+      title: "Solar Conjunction",
+      prompt: "How will you help the crew?",
+      options: [
+        {
+          id: "offline-kit",
+          label: "Pack an Offline Kit",
+          minigame: {
+            type: "offlineKit",
+            intro: "You have six storage units. Save the three files the crew will need while the radio is offline."
+          },
+          outcomes: { win: "kit-win", lose: "kit-lose" }
+        },
+        {
+          id: "habitat-drill",
+          label: "Run the Habitat Drill",
+          minigame: {
+            type: "habitatDrill",
+            intro: "Three alarms need your attention. Read the onboard manual and choose a safe action for each alarm."
+          },
+          outcomes: { win: "drill-win", lose: "drill-lose" }
+        }
+      ]
+    },
+    outcomes: {
+      "kit-win": {
+        tone: "good",
+        text: "Your crew used the offline files to check the base. When the signal returned, you sent your mission log to Earth.",
+        effects: { energy: -4 }
+      },
+      "kit-lose": {
+        tone: "mixed",
+        text: "Your kit was missing a key file. The crew used extra energy to search for a backup copy.",
+        effects: { energy: -8 }
+      },
+      "drill-win": {
+        tone: "good",
+        text: "You cleared all three alarms. When the signal returned, you sent Earth a report on the repairs.",
+        effects: { energy: -3 }
+      },
+      "drill-lose": {
+        tone: "mixed",
+        text: "The safety system took over after two wrong actions. The crew stayed safe, but the base used extra energy and oxygen.",
+        effects: { energy: -7, lifeSupport: -5 }
+      }
+    },
+    fact: {
+      title: "Based on a true story",
+      text: "During solar conjunction, NASA plans tasks in advance so its Mars rovers can keep working while new radio commands are paused."
+    }
+  };
 
   // src/data/rounds/round-04.js
   var round04 = {
@@ -401,7 +460,7 @@
   };
 
   // src/data/rounds/index.js
-  var ROUNDS = [round01, round02, round04];
+  var ROUNDS = [round01, round02, round03, round04];
 
   // src/services/storage.js
   function readString(key) {
@@ -1204,8 +1263,1653 @@
     "shieldZap",
     "rocketBoost",
     "offlineKit",
-    "habitatDrill"
+    "habitatDrill",
+    "marsRoverDrive",
+    "marsRoutePlanner",
+    "marsRadarScan"
   ]);
+
+  // src/minigames/mars-recon-model.js
+  var MARS_RECON = Object.freeze({
+    width: 19,
+    height: 11,
+    tileSize: 46,
+    home: Object.freeze([1, 1]),
+    normalCost: 1,
+    rockyCost: 3,
+    batteryBuffer: 38,
+    maxRadarScans: 8,
+    radarTolerance: 15
+  });
+  var SCIENCE_SITES = Object.freeze([
+    {
+      id: 0,
+      name: "ALPHA",
+      position: Object.freeze([5, 3])
+    },
+    {
+      id: 1,
+      name: "BETA",
+      position: Object.freeze([12, 3])
+    },
+    {
+      id: 2,
+      name: "GAMMA",
+      position: Object.freeze([16, 8])
+    }
+  ]);
+  var RADAR_SECTORS = Object.freeze([
+    {
+      id: 0,
+      label: "A",
+      bearing: 40,
+      type: "regolith",
+      signal: "Fine, low-reflectance particles"
+    },
+    {
+      id: 1,
+      label: "B",
+      bearing: 125,
+      type: "rock",
+      signal: "Strong, irregular backscatter"
+    },
+    {
+      id: 2,
+      label: "C",
+      bearing: 220,
+      type: "dune",
+      signal: "Layered, shifting ridge pattern"
+    },
+    {
+      id: 3,
+      label: "D",
+      bearing: 310,
+      type: "slope",
+      signal: "Consistent elevation gradient"
+    }
+  ]);
+  var MAP_ROWS = [
+    "###################",
+    "#.....#...........#",
+    "#.###.#.#####.###.#",
+    "#...#...#...#...#.#",
+    "###.#####.#.###.#.#",
+    "#...#.....#.....#.#",
+    "#.###.#########.#.#",
+    "#...#...........#.#",
+    "#.#.###.#######.#.#",
+    "#.................#",
+    "###################"
+  ];
+  function createMarsMap() {
+    const map = MAP_ROWS.map((row) => row.split(""));
+    const passages = [
+      [5, 2],
+      [5, 4],
+      [6, 3],
+      [9, 4],
+      [12, 4],
+      [13, 4],
+      [16, 7],
+      [15, 8],
+      [12, 8],
+      [5, 8],
+      [4, 8],
+      [4, 7],
+      [7, 6],
+      [12, 6],
+      [13, 6],
+      [17, 8]
+    ];
+    passages.forEach(([x, y]) => {
+      map[y][x] = ".";
+    });
+    for (let x = 5; x <= 12; x++) {
+      map[3][x] = ".";
+    }
+    for (let y = 3; y <= 5; y++) {
+      map[y][9] = ".";
+    }
+    for (let x = 9; x <= 15; x++) {
+      map[5][x] = ".";
+    }
+    for (let y = 5; y <= 8; y++) {
+      map[y][15] = ".";
+    }
+    map[8][16] = ".";
+    return map;
+  }
+  var MARS_MAP = createMarsMap();
+  function samePosition(a, b) {
+    return a[0] === b[0] && a[1] === b[1];
+  }
+  function isPassable(x, y) {
+    return Number.isInteger(x) && Number.isInteger(y) && x >= 0 && y >= 0 && x < MARS_RECON.width && y < MARS_RECON.height && MARS_MAP[y][x] !== "#";
+  }
+  function isRocky(x, y) {
+    return isPassable(x, y) && (x * 7 + y * 11) % 9 === 0;
+  }
+  function movementCost(x, y) {
+    if (!isPassable(x, y)) {
+      return Infinity;
+    }
+    return isRocky(x, y) ? MARS_RECON.rockyCost : MARS_RECON.normalCost;
+  }
+  var DIRECTIONS2 = Object.freeze([
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1]
+  ]);
+  function shortestPath(start, destination) {
+    if (!isPassable(...start) || !isPassable(...destination)) {
+      return {
+        cost: Infinity,
+        path: []
+      };
+    }
+    const distances = Array.from(
+      { length: MARS_RECON.height },
+      () => Array(MARS_RECON.width).fill(Infinity)
+    );
+    const previous = /* @__PURE__ */ new Map();
+    const queue = [
+      {
+        x: start[0],
+        y: start[1],
+        cost: 0
+      }
+    ];
+    distances[start[1]][start[0]] = 0;
+    while (queue.length > 0) {
+      queue.sort((a, b) => a.cost - b.cost);
+      const current = queue.shift();
+      const { x, y, cost } = current;
+      if (cost !== distances[y][x]) {
+        continue;
+      }
+      if (samePosition([x, y], destination)) {
+        const path = [];
+        let position = [x, y];
+        while (!samePosition(position, start)) {
+          path.unshift(position);
+          position = previous.get(
+            position.join(",")
+          );
+        }
+        return { cost, path };
+      }
+      for (const [dx, dy] of DIRECTIONS2) {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (!isPassable(nx, ny)) {
+          continue;
+        }
+        const nextCost = cost + movementCost(nx, ny);
+        if (nextCost < distances[ny][nx]) {
+          distances[ny][nx] = nextCost;
+          previous.set(
+            `${nx},${ny}`,
+            [x, y]
+          );
+          queue.push({
+            x: nx,
+            y: ny,
+            cost: nextCost
+          });
+        }
+      }
+    }
+    return {
+      cost: Infinity,
+      path: []
+    };
+  }
+  function calculateTour(order) {
+    let currentPosition = MARS_RECON.home;
+    let totalCost = 0;
+    const fullPath = [];
+    for (const siteId of [...order, -1]) {
+      const destination = siteId === -1 ? MARS_RECON.home : SCIENCE_SITES[siteId]?.position;
+      if (!destination) {
+        return {
+          cost: Infinity,
+          path: []
+        };
+      }
+      const segment = shortestPath(
+        currentPosition,
+        destination
+      );
+      if (!Number.isFinite(segment.cost)) {
+        return {
+          cost: Infinity,
+          path: []
+        };
+      }
+      totalCost += segment.cost;
+      fullPath.push(...segment.path);
+      currentPosition = destination;
+    }
+    return {
+      cost: totalCost,
+      path: fullPath
+    };
+  }
+  function getSiteOrders() {
+    return [
+      [0, 1, 2],
+      [0, 2, 1],
+      [1, 0, 2],
+      [1, 2, 0],
+      [2, 0, 1],
+      [2, 1, 0]
+    ];
+  }
+  function minimumTour() {
+    let best = {
+      order: [],
+      cost: Infinity,
+      path: []
+    };
+    for (const order of getSiteOrders()) {
+      const result = calculateTour(order);
+      if (result.cost < best.cost) {
+        best = {
+          order: [...order],
+          cost: result.cost,
+          path: result.path
+        };
+      }
+    }
+    return best;
+  }
+  var INITIAL_BATTERY = minimumTour().cost + MARS_RECON.batteryBuffer;
+  function createMarsSession(route = "A") {
+    if (!["A", "B", "C"].includes(route)) {
+      throw new Error(
+        `Invalid Mars reconnaissance route: ${route}`
+      );
+    }
+    return {
+      route,
+      status: "running",
+      reason: null,
+      x: MARS_RECON.home[0],
+      y: MARS_RECON.home[1],
+      battery: INITIAL_BATTERY,
+      scanned: /* @__PURE__ */ new Set(),
+      visited: /* @__PURE__ */ new Set([
+        MARS_RECON.home.join(",")
+      ]),
+      // Route B
+      plan: [],
+      expedition: null,
+      // Route C
+      bearing: 0,
+      attempts: 0,
+      readings: {},
+      classified: {}
+    };
+  }
+  function finishSession(session, status, reason = null) {
+    if (session.status !== "running") {
+      return false;
+    }
+    session.status = status;
+    session.reason = reason;
+    return true;
+  }
+  function endMarsSession(session) {
+    return finishSession(
+      session,
+      "lose",
+      "ended-early"
+    );
+  }
+  function isAtHabitat(session) {
+    return samePosition(
+      [session.x, session.y],
+      MARS_RECON.home
+    );
+  }
+  function moveMarsRover(session, dx, dy) {
+    if (session.route !== "A" || session.status !== "running") {
+      return {
+        moved: false,
+        reason: "not-running"
+      };
+    }
+    if (!Number.isInteger(dx) || !Number.isInteger(dy) || Math.abs(dx) + Math.abs(dy) !== 1) {
+      return {
+        moved: false,
+        reason: "invalid-direction"
+      };
+    }
+    const nx = session.x + dx;
+    const ny = session.y + dy;
+    if (!isPassable(nx, ny)) {
+      return {
+        moved: false,
+        reason: "obstacle"
+      };
+    }
+    const cost = movementCost(nx, ny);
+    if (session.battery < cost) {
+      finishSession(
+        session,
+        "lose",
+        "battery-exhausted"
+      );
+      return {
+        moved: false,
+        reason: "battery-exhausted"
+      };
+    }
+    session.x = nx;
+    session.y = ny;
+    session.battery -= cost;
+    session.visited.add(`${nx},${ny}`);
+    const site = SCIENCE_SITES.find(
+      (item) => samePosition(item.position, [nx, ny])
+    );
+    const returnCost = shortestPath(
+      [nx, ny],
+      MARS_RECON.home
+    ).cost;
+    const reserveWarning = session.battery < returnCost;
+    if (isAtHabitat(session) && session.scanned.size === SCIENCE_SITES.length) {
+      finishSession(session, "win");
+    } else if (session.battery === 0 && !isAtHabitat(session)) {
+      finishSession(
+        session,
+        "lose",
+        "battery-exhausted"
+      );
+    }
+    return {
+      moved: true,
+      position: [nx, ny],
+      cost,
+      battery: session.battery,
+      site: site?.name ?? null,
+      reserveWarning,
+      returnCost,
+      status: session.status
+    };
+  }
+  function scanMarsSite(session) {
+    if (session.route !== "A" || session.status !== "running") {
+      return {
+        success: false,
+        reason: "not-running"
+      };
+    }
+    const site = SCIENCE_SITES.find(
+      (item) => samePosition(
+        item.position,
+        [session.x, session.y]
+      )
+    );
+    if (!site) {
+      return {
+        success: false,
+        reason: "not-at-site"
+      };
+    }
+    if (session.scanned.has(site.id)) {
+      return {
+        success: false,
+        reason: "already-scanned"
+      };
+    }
+    session.scanned.add(site.id);
+    return {
+      success: true,
+      site: site.name,
+      scanned: session.scanned.size,
+      remaining: SCIENCE_SITES.length - session.scanned.size
+    };
+  }
+  function toggleMarsWaypoint(session, siteId) {
+    if (session.route !== "B" || session.status !== "running" || session.expedition !== null) {
+      return false;
+    }
+    if (!Number.isInteger(siteId) || siteId < 0 || siteId >= SCIENCE_SITES.length) {
+      return false;
+    }
+    const index = session.plan.indexOf(siteId);
+    if (index >= 0) {
+      session.plan.splice(index, 1);
+    } else {
+      session.plan.push(siteId);
+    }
+    return true;
+  }
+  function evaluateMarsPlan(session) {
+    const tour = calculateTour(session.plan);
+    const allSitesSelected = session.plan.length === SCIENCE_SITES.length && new Set(session.plan).size === SCIENCE_SITES.length;
+    return {
+      ...tour,
+      allSitesSelected,
+      affordable: tour.cost <= session.battery,
+      remainingBattery: session.battery - tour.cost,
+      valid: allSitesSelected && tour.cost <= session.battery
+    };
+  }
+  function startMarsExpedition(session) {
+    if (session.route !== "B" || session.status !== "running" || session.expedition !== null) {
+      return {
+        success: false,
+        reason: "not-available"
+      };
+    }
+    const estimate = evaluateMarsPlan(session);
+    if (!estimate.allSitesSelected) {
+      return {
+        success: false,
+        reason: "missing-waypoints"
+      };
+    }
+    if (!estimate.affordable) {
+      return {
+        success: false,
+        reason: "insufficient-battery"
+      };
+    }
+    session.expedition = {
+      path: estimate.path.map(
+        (position) => [...position]
+      ),
+      index: 0,
+      cost: estimate.cost
+    };
+    return {
+      success: true,
+      path: session.expedition.path,
+      cost: estimate.cost
+    };
+  }
+  function stepMarsExpedition(session) {
+    if (session.route !== "B" || session.status !== "running" || !session.expedition) {
+      return {
+        moved: false,
+        reason: "not-running"
+      };
+    }
+    const expedition = session.expedition;
+    if (expedition.index >= expedition.path.length) {
+      finishSession(session, "win");
+      return {
+        moved: false,
+        finished: true,
+        status: session.status
+      };
+    }
+    const [nx, ny] = expedition.path[expedition.index];
+    const cost = movementCost(nx, ny);
+    if (session.battery < cost) {
+      finishSession(
+        session,
+        "lose",
+        "battery-exhausted"
+      );
+      return {
+        moved: false,
+        reason: "battery-exhausted"
+      };
+    }
+    session.x = nx;
+    session.y = ny;
+    session.battery -= cost;
+    session.visited.add(`${nx},${ny}`);
+    const site = SCIENCE_SITES.find(
+      (item) => samePosition(item.position, [nx, ny])
+    );
+    if (site) {
+      session.scanned.add(site.id);
+    }
+    expedition.index++;
+    const finished = expedition.index >= expedition.path.length;
+    if (finished) {
+      if (isAtHabitat(session) && session.scanned.size === SCIENCE_SITES.length) {
+        finishSession(session, "win");
+      } else {
+        finishSession(
+          session,
+          "lose",
+          "incomplete-expedition"
+        );
+      }
+    }
+    return {
+      moved: true,
+      position: [nx, ny],
+      cost,
+      battery: session.battery,
+      finished,
+      status: session.status
+    };
+  }
+  function normalizeBearing(angle) {
+    if (!Number.isFinite(angle)) {
+      return 0;
+    }
+    return (angle % 360 + 360) % 360;
+  }
+  function bearingDifference(a, b) {
+    const difference = Math.abs(
+      normalizeBearing(a) - normalizeBearing(b)
+    );
+    return Math.min(
+      difference,
+      360 - difference
+    );
+  }
+  function aimMarsRadar(session, angle) {
+    if (session.route !== "C" || session.status !== "running") {
+      return false;
+    }
+    session.bearing = normalizeBearing(angle);
+    return true;
+  }
+  function scanMarsSector(session, sectorId) {
+    if (session.route !== "C" || session.status !== "running") {
+      return {
+        success: false,
+        reason: "not-running"
+      };
+    }
+    const sector = RADAR_SECTORS[sectorId];
+    if (!sector) {
+      return {
+        success: false,
+        reason: "invalid-sector"
+      };
+    }
+    if (session.attempts >= MARS_RECON.maxRadarScans) {
+      return {
+        success: false,
+        reason: "no-attempts"
+      };
+    }
+    session.attempts++;
+    const difference = bearingDifference(
+      session.bearing,
+      sector.bearing
+    );
+    const aligned = difference <= MARS_RECON.radarTolerance;
+    if (aligned) {
+      session.readings[sectorId] = sector.signal;
+    }
+    return {
+      success: aligned,
+      sector: sector.label,
+      signal: aligned ? sector.signal : null,
+      difference,
+      attempts: session.attempts,
+      remaining: MARS_RECON.maxRadarScans - session.attempts
+    };
+  }
+  function classifyMarsSector(session, sectorId, terrainType) {
+    if (session.route !== "C" || session.status !== "running") {
+      return {
+        success: false,
+        reason: "not-running"
+      };
+    }
+    const sector = RADAR_SECTORS[sectorId];
+    if (!sector) {
+      return {
+        success: false,
+        reason: "invalid-sector"
+      };
+    }
+    if (!session.readings[sectorId]) {
+      return {
+        success: false,
+        reason: "not-scanned"
+      };
+    }
+    const correct = terrainType === sector.type;
+    session.classified[sectorId] = {
+      type: terrainType,
+      correct
+    };
+    const correctCount = getCorrectMarsSectors(session);
+    if (correctCount === RADAR_SECTORS.length) {
+      finishSession(session, "win");
+    }
+    return {
+      success: correct,
+      sector: sector.label,
+      correctCount,
+      total: RADAR_SECTORS.length,
+      status: session.status
+    };
+  }
+  function getCorrectMarsSectors(session) {
+    return Object.values(session.classified).filter((item) => item.correct).length;
+  }
+  function evaluateMarsMission(session) {
+    if (session.route === "A") {
+      const returnedHome = isAtHabitat(session);
+      const success2 = session.status === "win" && returnedHome && session.scanned.size === SCIENCE_SITES.length;
+      const partial2 = !success2 && returnedHome && session.scanned.size > 0;
+      return {
+        route: "A",
+        success: success2,
+        partial: partial2,
+        status: success2 ? "win" : "lose",
+        scanned: session.scanned.size,
+        batteryRemaining: session.battery,
+        mapQuality: success2 ? "full" : partial2 ? "partial" : "none"
+      };
+    }
+    if (session.route === "B") {
+      const success2 = session.status === "win" && isAtHabitat(session) && session.scanned.size === SCIENCE_SITES.length;
+      return {
+        route: "B",
+        success: success2,
+        partial: false,
+        status: success2 ? "win" : "lose",
+        scanned: session.scanned.size,
+        batteryRemaining: session.battery,
+        mapQuality: success2 ? "full" : "none"
+      };
+    }
+    const correctCount = getCorrectMarsSectors(session);
+    const success = session.status === "win" && correctCount === RADAR_SECTORS.length;
+    const partial = !success && correctCount >= 2;
+    return {
+      route: "C",
+      success,
+      partial,
+      status: success ? "win" : "lose",
+      classified: correctCount,
+      attempts: session.attempts,
+      batteryRemaining: null,
+      mapQuality: success || partial ? "partial" : "none"
+    };
+  }
+
+  // src/minigames/mars-recon.js
+  var VIEW = {
+    width: 960,
+    height: 590,
+    tile: MARS_RECON.tileSize,
+    offsetX: 43,
+    offsetY: 38,
+    animationDelay: 75
+  };
+  var ROUTES = {
+    A: {
+      title: "Manual rover driving",
+      subtitle: "Drive, scan, and return",
+      help: "Use WASD or arrow keys to drive. Press Space to scan each science site. Return to the habitat safely."
+    },
+    B: {
+      title: "Autonomous route planning",
+      subtitle: "Plan a safe expedition",
+      help: "Select all three science sites in order. Review the battery estimate, then execute your plan."
+    },
+    C: {
+      title: "Remote terrain mapping",
+      subtitle: "Radar reconnaissance",
+      help: "Align the antenna, scan four sectors, and classify the terrain. You have eight scan attempts."
+    }
+  };
+  var COLORS = {
+    background: "#291d25",
+    sand: "#b27659",
+    sandDetail: "#d39b75",
+    rocky: "#805147",
+    rockDetail: "#c58a68",
+    obstacle: "#3e343c",
+    obstacleDetail: "#5b4546",
+    habitat: "#72e7ed",
+    science: "#ffcf79",
+    scanned: "#7de7a9",
+    rover: "#f4f6e8",
+    roverDark: "#17263a",
+    text: "#f7d9b2",
+    radar: "#112b36",
+    radarLine: "#6bc6c5"
+  };
+  function drawBadge(ctx, x, y, color, label) {
+    const tile = VIEW.tile;
+    const px = x * tile + tile / 2;
+    const py = y * tile + tile / 2;
+    ctx.save();
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 15;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(px, py, 16, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = "#142333";
+    ctx.font = "bold 17px monospace";
+    ctx.textAlign = "center";
+    ctx.fillText(label, px, py + 6);
+    ctx.restore();
+  }
+  function drawTerrainTile(ctx, x, y) {
+    const size = VIEW.tile;
+    const px = x * size;
+    const py = y * size;
+    const passable = isPassable(x, y);
+    const rocky = isRocky(x, y);
+    ctx.fillStyle = !passable ? COLORS.obstacle : rocky ? COLORS.rocky : COLORS.sand;
+    ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+    if (!passable) {
+      ctx.fillStyle = COLORS.obstacleDetail;
+      ctx.beginPath();
+      ctx.moveTo(px + 4, py + 35);
+      ctx.lineTo(px + 13, py + 8);
+      ctx.lineTo(px + 32, py + 4);
+      ctx.lineTo(px + 42, py + 29);
+      ctx.lineTo(px + 28, py + 42);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = "#98736b";
+      ctx.stroke();
+      return;
+    }
+    ctx.fillStyle = rocky ? COLORS.rockDetail : COLORS.sandDetail;
+    for (let i = 0; i < 3; i++) {
+      const dx = (x * 13 + y * 7 + i * 17) % 37;
+      const dy = (y * 19 + x * 5 + i * 11) % 36;
+      ctx.fillRect(px + dx + 5, py + dy + 5, 3, 2);
+    }
+  }
+  function drawGrid(ctx) {
+    const size = VIEW.tile;
+    ctx.strokeStyle = "#ffffff12";
+    ctx.lineWidth = 1;
+    for (let x = 0; x <= MARS_RECON.width; x++) {
+      ctx.beginPath();
+      ctx.moveTo(x * size, 0);
+      ctx.lineTo(x * size, MARS_RECON.height * size);
+      ctx.stroke();
+    }
+    for (let y = 0; y <= MARS_RECON.height; y++) {
+      ctx.beginPath();
+      ctx.moveTo(0, y * size);
+      ctx.lineTo(MARS_RECON.width * size, y * size);
+      ctx.stroke();
+    }
+  }
+  function drawRover(ctx, x, y) {
+    const size = VIEW.tile;
+    const px = x * size + size / 2;
+    const py = y * size + size / 2;
+    ctx.save();
+    ctx.translate(px, py);
+    ctx.shadowColor = "#0a0e16";
+    ctx.shadowBlur = 11;
+    ctx.fillStyle = COLORS.rover;
+    ctx.fillRect(-13, -10, 26, 20);
+    ctx.fillStyle = COLORS.roverDark;
+    ctx.fillRect(-10, -7, 20, 14);
+    ctx.fillStyle = "#f6c981";
+    ctx.fillRect(-5, -5, 10, 10);
+    ctx.fillStyle = "#182638";
+    ctx.fillRect(-17, -12, 6, 8);
+    ctx.fillRect(11, -12, 6, 8);
+    ctx.fillRect(-17, 4, 6, 8);
+    ctx.fillRect(11, 4, 6, 8);
+    ctx.restore();
+  }
+  function drawPlannedPath(ctx, session) {
+    if (session.route !== "B" || session.plan.length === 0) {
+      return;
+    }
+    const estimate = evaluateMarsPlan(session);
+    const size = VIEW.tile;
+    ctx.save();
+    ctx.strokeStyle = "#7be7e5";
+    ctx.lineWidth = 5;
+    ctx.setLineDash([8, 7]);
+    ctx.beginPath();
+    ctx.moveTo(
+      MARS_RECON.home[0] * size + size / 2,
+      MARS_RECON.home[1] * size + size / 2
+    );
+    for (const [x, y] of estimate.path) {
+      ctx.lineTo(
+        x * size + size / 2,
+        y * size + size / 2
+      );
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+  function drawTerrain(ctx, session) {
+    ctx.save();
+    ctx.translate(VIEW.offsetX, VIEW.offsetY);
+    for (let y = 0; y < MARS_RECON.height; y++) {
+      for (let x = 0; x < MARS_RECON.width; x++) {
+        drawTerrainTile(ctx, x, y);
+      }
+    }
+    drawGrid(ctx);
+    drawPlannedPath(ctx, session);
+    drawBadge(
+      ctx,
+      ...MARS_RECON.home,
+      COLORS.habitat,
+      "H"
+    );
+    for (const site of SCIENCE_SITES) {
+      const scanned = session.scanned.has(site.id);
+      drawBadge(
+        ctx,
+        ...site.position,
+        scanned ? COLORS.scanned : COLORS.science,
+        scanned ? "\u2713" : String(site.id + 1)
+      );
+    }
+    drawRover(ctx, session.x, session.y);
+    ctx.restore();
+    ctx.fillStyle = COLORS.text;
+    ctx.font = "bold 16px monospace";
+    ctx.textAlign = "left";
+    ctx.fillText("MARS SURFACE \xB7 SOL 264", 43, 568);
+    ctx.textAlign = "right";
+    ctx.fillText(
+      session.route === "A" ? "MANUAL CONTROL" : "AUTONOMOUS NAVIGATION",
+      917,
+      568
+    );
+  }
+  function drawRadar(ctx, session) {
+    const centerX = 470;
+    const centerY = 283;
+    const radius = 210;
+    ctx.fillStyle = COLORS.radar;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius + 22, 0, Math.PI * 2);
+    ctx.fill();
+    for (let ring = 1; ring <= 4; ring++) {
+      ctx.strokeStyle = "#6bc6c533";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(
+        centerX,
+        centerY,
+        radius * ring / 4,
+        0,
+        Math.PI * 2
+      );
+      ctx.stroke();
+    }
+    for (let angle = 0; angle < 360; angle += 30) {
+      const radians2 = (angle - 90) * Math.PI / 180;
+      ctx.strokeStyle = "#6bc6c52a";
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(
+        centerX + radius * Math.cos(radians2),
+        centerY + radius * Math.sin(radians2)
+      );
+      ctx.stroke();
+    }
+    for (const sector of RADAR_SECTORS) {
+      const radians2 = (sector.bearing - 90) * Math.PI / 180;
+      const x = centerX + 175 * Math.cos(radians2);
+      const y = centerY + 175 * Math.sin(radians2);
+      const correct = session.classified[sector.id]?.correct;
+      ctx.fillStyle = correct ? COLORS.scanned : COLORS.science;
+      ctx.beginPath();
+      ctx.arc(x, y, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#182839";
+      ctx.textAlign = "center";
+      ctx.font = "bold 18px monospace";
+      ctx.fillText(
+        correct ? "\u2713" : sector.label,
+        x,
+        y + 6
+      );
+    }
+    const radians = (session.bearing - 90) * Math.PI / 180;
+    ctx.strokeStyle = "#75edf1";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(
+      centerX + radius * Math.cos(radians),
+      centerY + radius * Math.sin(radians)
+    );
+    ctx.stroke();
+    ctx.fillStyle = "#a2f2f4";
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 9, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = COLORS.text;
+    ctx.font = "bold 16px monospace";
+    ctx.textAlign = "left";
+    ctx.fillText("REMOTE RADAR \xB7 HABITAT", 35, 552);
+    ctx.textAlign = "right";
+    ctx.fillText(
+      `BEARING ${Math.round(session.bearing)}\xB0`,
+      917,
+      552
+    );
+  }
+  function renderCanvas(ctx, session) {
+    ctx.clearRect(0, 0, VIEW.width, VIEW.height);
+    ctx.fillStyle = COLORS.background;
+    ctx.fillRect(0, 0, VIEW.width, VIEW.height);
+    if (session.route === "C") {
+      drawRadar(ctx, session);
+    } else {
+      drawTerrain(ctx, session);
+    }
+  }
+  function runMarsRecon(container, { route = "A" } = {}) {
+    return new Promise((resolve) => {
+      const selectedRoute = ROUTES[route] ? route : "A";
+      const session = createMarsSession(selectedRoute);
+      const info = ROUTES[selectedRoute];
+      let ended = false;
+      let busy = false;
+      let animationFrame = null;
+      let holdTimer = null;
+      const title = el(
+        "h2",
+        { class: "mg-title", tabindex: "-1" },
+        info.title
+      );
+      const help = el(
+        "p",
+        { class: "mg-help" },
+        info.help
+      );
+      const canvas = el("canvas", {
+        class: "mars-canvas",
+        width: VIEW.width,
+        height: VIEW.height,
+        "aria-label": "Mars reconnaissance terrain map"
+      });
+      const ctx = canvas.getContext("2d");
+      const status = el(
+        "p",
+        {
+          class: "mg-status mars-status",
+          role: "status",
+          "aria-live": "polite"
+        },
+        "AURA: Mission systems ready."
+      );
+      const batteryLabel = el(
+        "span",
+        { class: "mars-stat-value" },
+        ""
+      );
+      const batteryFill = el("div", {
+        class: "fill mars-battery-fill"
+      });
+      const batteryBar = el(
+        "div",
+        {
+          class: "bar",
+          role: "progressbar",
+          "aria-label": "Rover battery",
+          "aria-valuemin": "0",
+          "aria-valuemax": String(INITIAL_BATTERY)
+        },
+        batteryFill
+      );
+      const batteryPanel = el(
+        "div",
+        { class: "mars-stat" },
+        el(
+          "div",
+          { class: "mars-stat-heading" },
+          el("span", {}, "ROVER BATTERY"),
+          batteryLabel
+        ),
+        batteryBar
+      );
+      const progressLabel = el(
+        "span",
+        { class: "mars-stat-value" },
+        ""
+      );
+      const progressFill = el("div", {
+        class: "fill mars-progress-fill"
+      });
+      const progressBar = el(
+        "div",
+        {
+          class: "bar",
+          role: "progressbar",
+          "aria-label": "Mission progress",
+          "aria-valuemin": "0",
+          "aria-valuemax": selectedRoute === "C" ? "4" : "3"
+        },
+        progressFill
+      );
+      const progressPanel = el(
+        "div",
+        { class: "mars-stat" },
+        el(
+          "div",
+          { class: "mars-stat-heading" },
+          el(
+            "span",
+            {},
+            selectedRoute === "C" ? "SECTORS CLASSIFIED" : "SCIENCE SITES"
+          ),
+          progressLabel
+        ),
+        progressBar
+      );
+      const controls = el("div", {
+        class: "mars-controls"
+      });
+      const skipButton = el(
+        "button",
+        {
+          type: "button",
+          class: "mg-skip mars-end"
+        },
+        "End & review (counts as a miss)"
+      );
+      const sidebar = el(
+        "aside",
+        { class: "mars-sidebar" },
+        el(
+          "p",
+          { class: "mars-subtitle" },
+          info.subtitle
+        ),
+        batteryPanel,
+        progressPanel,
+        controls,
+        status,
+        skipButton
+      );
+      if (selectedRoute === "C") {
+        batteryPanel.hidden = true;
+      }
+      const root = el(
+        "div",
+        {
+          class: "minigame mars-recon",
+          "data-route": selectedRoute
+        },
+        title,
+        help,
+        el(
+          "div",
+          { class: "mars-layout" },
+          el(
+            "div",
+            { class: "mars-board" },
+            canvas,
+            el(
+              "p",
+              { class: "mars-legend" },
+              "H = Habitat \xB7 1\u20133 = Science sites \xB7 Dark rocks = Obstacles"
+            )
+          ),
+          sidebar
+        )
+      );
+      mount(container, root);
+      focusTitle(root);
+      function message(text) {
+        status.textContent = `AURA: ${text}`;
+      }
+      function render() {
+        if (ended) return;
+        renderCanvas(ctx, session);
+        const batteryPercent = session.battery / INITIAL_BATTERY * 100;
+        batteryLabel.textContent = `${session.battery} / ${INITIAL_BATTERY}`;
+        batteryFill.style.width = `${Math.max(0, batteryPercent)}%`;
+        batteryBar.setAttribute(
+          "aria-valuenow",
+          String(session.battery)
+        );
+        let progress;
+        let total = 3;
+        if (selectedRoute === "A") {
+          progress = session.scanned.size;
+        } else if (selectedRoute === "B") {
+          progress = session.scanned.size;
+        } else {
+          progress = getCorrectMarsSectors(session);
+          total = 4;
+        }
+        progressLabel.textContent = `${progress} / ${total}`;
+        progressFill.style.width = `${progress / total * 100}%`;
+        progressBar.setAttribute(
+          "aria-valuenow",
+          String(progress)
+        );
+      }
+      function stopMovement() {
+        if (holdTimer !== null) {
+          clearInterval(holdTimer);
+          holdTimer = null;
+        }
+      }
+      function cleanup() {
+        stopMovement();
+        if (animationFrame !== null) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = null;
+        }
+        document.removeEventListener("keydown", onKey);
+        window.removeEventListener("pointerup", stopMovement);
+        window.removeEventListener("blur", stopMovement);
+      }
+      async function finish() {
+        if (ended) return;
+        ended = true;
+        cleanup();
+        const evaluation = evaluateMarsMission(session);
+        const result = evaluation.status;
+        skipButton.disabled = true;
+        controls.querySelectorAll("button, select, input").forEach((element) => {
+          element.disabled = true;
+        });
+        if (result === "win") {
+          message("Mission accomplished. Reconnaissance complete.");
+          sound.win();
+        } else {
+          message("Mission ended. Reviewing available survey data.");
+          sound.lose();
+        }
+        await sleep(TIMING.minigameEndMs);
+        resolve({
+          result,
+          stats: {
+            ...evaluation,
+            route: selectedRoute,
+            reason: session.reason
+          }
+        });
+      }
+      function checkCompletion() {
+        if (session.status !== "running") {
+          finish();
+          return true;
+        }
+        return false;
+      }
+      function move(dx, dy) {
+        if (ended || busy || selectedRoute !== "A") {
+          return;
+        }
+        const result = moveMarsRover(session, dx, dy);
+        if (!result.moved) {
+          const messages = {
+            obstacle: "Obstacle ahead. Choose another corridor.",
+            "battery-exhausted": "Rover battery exhausted.",
+            "invalid-direction": "Invalid movement command."
+          };
+          message(
+            messages[result.reason] ?? "Movement unavailable."
+          );
+          render();
+          checkCompletion();
+          return;
+        }
+        sound.thrust();
+        if (result.reserveWarning) {
+          message(
+            "WARNING: Battery reserve is below the estimated return requirement!"
+          );
+        } else if (result.site) {
+          message(
+            `Site ${result.site} reached. Press Space to scan.`
+          );
+        } else if (isAtHabitat(session)) {
+          message("Rover returned to habitat.");
+        } else {
+          message(
+            `Rover moved. Battery cost: ${result.cost}.`
+          );
+        }
+        render();
+        checkCompletion();
+      }
+      function scan() {
+        if (ended || selectedRoute !== "A") {
+          return;
+        }
+        const result = scanMarsSite(session);
+        if (result.success) {
+          sound.good();
+          message(
+            `Site ${result.site} scanned. ${result.remaining} sites remaining.`
+          );
+        } else {
+          sound.bad();
+          message(
+            result.reason === "already-scanned" ? "This site has already been scanned." : "Move onto a science marker before scanning."
+          );
+        }
+        render();
+      }
+      function createMoveButton(symbol, dx, dy, label) {
+        const button2 = el(
+          "button",
+          {
+            type: "button",
+            class: "mg-button mars-arrow",
+            "aria-label": label
+          },
+          symbol
+        );
+        button2.addEventListener("pointerdown", (event) => {
+          if (ended) return;
+          event.preventDefault();
+          stopMovement();
+          move(dx, dy);
+          holdTimer = setInterval(() => {
+            move(dx, dy);
+          }, 145);
+        });
+        [
+          "pointerup",
+          "pointerleave",
+          "pointercancel"
+        ].forEach((eventName) => {
+          button2.addEventListener(eventName, stopMovement);
+        });
+        return button2;
+      }
+      function setupManualControls() {
+        const up = createMoveButton("\u2191", 0, -1, "Move up");
+        const left = createMoveButton("\u2190", -1, 0, "Move left");
+        const down = createMoveButton("\u2193", 0, 1, "Move down");
+        const right = createMoveButton("\u2192", 1, 0, "Move right");
+        const arrows = el(
+          "div",
+          { class: "mars-arrows" },
+          el("span"),
+          up,
+          el("span"),
+          left,
+          down,
+          right
+        );
+        const scanButton = el(
+          "button",
+          {
+            type: "button",
+            class: "mg-button mars-action"
+          },
+          "SCAN SITE \xB7 SPACE"
+        );
+        scanButton.addEventListener("click", scan);
+        controls.append(
+          el(
+            "p",
+            { class: "mars-control-label" },
+            "MANUAL ROVER CONTROLS"
+          ),
+          arrows,
+          scanButton
+        );
+      }
+      function setupPlannerControls() {
+        const choices = el(
+          "div",
+          { class: "mars-waypoints" }
+        );
+        const estimate = el(
+          "p",
+          { class: "mars-reading" }
+        );
+        const executeButton = el(
+          "button",
+          {
+            type: "button",
+            class: "mg-button mars-action"
+          },
+          "EXECUTE PLAN"
+        );
+        const clearButton = el(
+          "button",
+          {
+            type: "button",
+            class: "mg-button"
+          },
+          "CLEAR PLAN"
+        );
+        function renderPlanner() {
+          choices.replaceChildren();
+          for (const site of SCIENCE_SITES) {
+            const position = session.plan.indexOf(site.id);
+            const selected = position !== -1;
+            const button2 = el(
+              "button",
+              {
+                type: "button",
+                class: `mars-waypoint${selected ? " selected" : ""}`
+              },
+              el("strong", {}, `SITE ${site.name}`),
+              el(
+                "span",
+                {},
+                selected ? `#${position + 1}` : "+ ADD"
+              )
+            );
+            button2.disabled = busy || ended;
+            button2.addEventListener("click", () => {
+              if (busy || ended) return;
+              toggleMarsWaypoint(session, site.id);
+              sound.good();
+              renderPlanner();
+              render();
+            });
+            choices.append(button2);
+          }
+          const plan = evaluateMarsPlan(session);
+          estimate.textContent = `Estimated power: ${plan.cost} / ${INITIAL_BATTERY} \xB7 Includes return trip`;
+          executeButton.disabled = busy || ended || !plan.valid;
+          clearButton.disabled = busy || ended || session.plan.length === 0;
+        }
+        function animateExpedition() {
+          let lastFrame = 0;
+          function stepFrame(timestamp) {
+            if (ended || !busy) return;
+            if (timestamp - lastFrame >= VIEW.animationDelay) {
+              lastFrame = timestamp;
+              const result = stepMarsExpedition(session);
+              render();
+              if (result.finished) {
+                busy = false;
+                animationFrame = null;
+                if (!checkCompletion()) {
+                  message("Expedition ended without completion.");
+                }
+                return;
+              }
+              if (session.status !== "running") {
+                busy = false;
+                animationFrame = null;
+                checkCompletion();
+                return;
+              }
+            }
+            animationFrame = requestAnimationFrame(stepFrame);
+          }
+          animationFrame = requestAnimationFrame(stepFrame);
+        }
+        executeButton.addEventListener("click", () => {
+          if (busy || ended) return;
+          const result = startMarsExpedition(session);
+          if (!result.success) {
+            sound.bad();
+            message("The planned route cannot be executed.");
+            return;
+          }
+          busy = true;
+          sound.good();
+          message(
+            "Autonomous rover expedition in progress."
+          );
+          renderPlanner();
+          animateExpedition();
+        });
+        clearButton.addEventListener("click", () => {
+          if (busy || ended) return;
+          session.plan = [];
+          renderPlanner();
+          render();
+        });
+        controls.append(
+          el(
+            "p",
+            { class: "mars-control-label" },
+            "SELECT SCIENCE WAYPOINTS"
+          ),
+          choices,
+          estimate,
+          executeButton,
+          clearButton
+        );
+        renderPlanner();
+      }
+      function setupRadarControls() {
+        const sectorSelect = el(
+          "select",
+          {
+            class: "mars-select",
+            "aria-label": "Radar sector"
+          },
+          ...RADAR_SECTORS.map(
+            (sector) => el(
+              "option",
+              { value: String(sector.id) },
+              `Sector ${sector.label}`
+            )
+          )
+        );
+        const bearingLabel = el(
+          "strong",
+          { class: "mars-bearing" },
+          "0\xB0"
+        );
+        const bearingSlider = el("input", {
+          type: "range",
+          class: "mars-slider",
+          min: "0",
+          max: "359",
+          step: "1",
+          value: "0",
+          "aria-label": "Antenna bearing"
+        });
+        const sectorHint = el(
+          "p",
+          { class: "mars-reading" }
+        );
+        const radarReading = el(
+          "p",
+          { class: "mars-reading" },
+          "No valid signal recorded."
+        );
+        const scanButton = el(
+          "button",
+          {
+            type: "button",
+            class: "mg-button mars-action"
+          },
+          "SCAN SECTOR"
+        );
+        const classification = el(
+          "select",
+          {
+            class: "mars-select",
+            "aria-label": "Terrain classification"
+          },
+          ...[
+            "regolith",
+            "rock",
+            "dune",
+            "slope"
+          ].map(
+            (type) => el(
+              "option",
+              { value: type },
+              type.toUpperCase()
+            )
+          )
+        );
+        const saveButton = el(
+          "button",
+          {
+            type: "button",
+            class: "mg-button"
+          },
+          "SAVE CLASSIFICATION"
+        );
+        function selectedSector() {
+          return Number(sectorSelect.value);
+        }
+        function renderRadarControls() {
+          const sector = RADAR_SECTORS[selectedSector()];
+          bearingLabel.textContent = `${Math.round(session.bearing)}\xB0`;
+          sectorHint.textContent = `Sector ${sector.label}: signal near ${sector.bearing}\xB0 (\xB1${MARS_RECON.radarTolerance}\xB0). Scans remaining: ${MARS_RECON.maxRadarScans - session.attempts}`;
+          radarReading.textContent = session.readings[sector.id] ? `SIGNAL: ${session.readings[sector.id]}` : "No valid signal recorded for this sector.";
+          scanButton.disabled = ended || session.attempts >= MARS_RECON.maxRadarScans;
+          saveButton.disabled = ended || !session.readings[sector.id];
+        }
+        bearingSlider.addEventListener("input", () => {
+          if (ended) return;
+          aimMarsRadar(
+            session,
+            Number(bearingSlider.value)
+          );
+          renderRadarControls();
+          render();
+        });
+        sectorSelect.addEventListener("change", () => {
+          renderRadarControls();
+          render();
+        });
+        scanButton.addEventListener("click", () => {
+          if (ended) return;
+          const result = scanMarsSector(
+            session,
+            selectedSector()
+          );
+          if (result.success) {
+            sound.good();
+            message(
+              "Radar signal acquired. Classify the terrain."
+            );
+          } else {
+            sound.bad();
+            message(
+              "Weak signal. Adjust the antenna bearing."
+            );
+          }
+          renderRadarControls();
+          render();
+        });
+        saveButton.addEventListener("click", () => {
+          if (ended) return;
+          const result = classifyMarsSector(
+            session,
+            selectedSector(),
+            classification.value
+          );
+          if (result.success) {
+            sound.good();
+            message(
+              `Correct terrain classification. ${result.correctCount}/4 sectors complete.`
+            );
+          } else {
+            sound.bad();
+            message(
+              "Classification mismatch. Review the signal."
+            );
+          }
+          renderRadarControls();
+          render();
+          checkCompletion();
+        });
+        controls.append(
+          el(
+            "p",
+            { class: "mars-control-label" },
+            "RADAR ALIGNMENT"
+          ),
+          sectorSelect,
+          el(
+            "div",
+            { class: "mars-stat-heading" },
+            el("span", {}, "ANTENNA BEARING"),
+            bearingLabel
+          ),
+          bearingSlider,
+          sectorHint,
+          scanButton,
+          radarReading,
+          el(
+            "p",
+            { class: "mars-control-label" },
+            "TERRAIN CLASSIFICATION"
+          ),
+          classification,
+          saveButton
+        );
+        renderRadarControls();
+      }
+      const KEY_DIRECTIONS = {
+        ArrowUp: [0, -1],
+        ArrowDown: [0, 1],
+        ArrowLeft: [-1, 0],
+        ArrowRight: [1, 0],
+        w: [0, -1],
+        s: [0, 1],
+        a: [-1, 0],
+        d: [1, 0]
+      };
+      function onKey(event) {
+        if (ended || busy || selectedRoute !== "A" || event.repeat || event.ctrlKey || event.metaKey || event.altKey) {
+          return;
+        }
+        const tag = event.target?.tagName;
+        if (["INPUT", "SELECT", "TEXTAREA"].includes(tag)) {
+          return;
+        }
+        const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+        const direction = KEY_DIRECTIONS[key];
+        if (direction) {
+          event.preventDefault();
+          move(...direction);
+          return;
+        }
+        if (event.code === "Space") {
+          event.preventDefault();
+          scan();
+        }
+      }
+      skipButton.addEventListener("click", () => {
+        if (ended) return;
+        endMarsSession(session);
+        finish();
+      });
+      if (selectedRoute === "A") {
+        setupManualControls();
+      } else if (selectedRoute === "B") {
+        setupPlannerControls();
+      } else {
+        setupRadarControls();
+      }
+      document.addEventListener("keydown", onKey);
+      window.addEventListener("pointerup", stopMovement);
+      window.addEventListener("blur", stopMovement);
+      render();
+    });
+  }
+  function runMarsRoverDrive(container, config = {}) {
+    return runMarsRecon(container, {
+      ...config,
+      route: "A"
+    });
+  }
+  function runMarsRoutePlanner(container, config = {}) {
+    return runMarsRecon(container, {
+      ...config,
+      route: "B"
+    });
+  }
+  function runMarsRadarScan(container, config = {}) {
+    return runMarsRecon(container, {
+      ...config,
+      route: "C"
+    });
+  }
 
   // src/minigames/index.js
   var MINIGAMES = {
@@ -1214,7 +2918,10 @@
     shieldZap: runShieldZap,
     rocketBoost: runRocketBoost,
     offlineKit: runOfflineKit,
-    habitatDrill: runHabitatDrill
+    habitatDrill: runHabitatDrill,
+    marsRoverDrive: runMarsRoverDrive,
+    marsRoutePlanner: runMarsRoutePlanner,
+    marsRadarScan: runMarsRadarScan
   };
   for (const type of MINIGAME_TYPES) {
     if (!MINIGAMES[type]) throw new Error("Minigame not registered: " + type);

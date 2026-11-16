@@ -7,6 +7,7 @@ import { MINIGAME_TYPES } from '../src/minigames/types.js';
 
 test('el juego esta configurado para 4 rondas en total', () => {
   assert.equal(GAME.totalRounds, 4);
+  assert.equal(ROUNDS.length, 4);
 });
 
 for (const round of ROUNDS) {
@@ -30,6 +31,12 @@ for (const round of ROUNDS) {
   });
 }
 
+test('las 4 rondas tienen números consecutivos del 1 al 4', () => {
+  ROUNDS.forEach((round, i) => {
+    assert.equal(round.number, i + 1, `la ronda ${round.id} debe ser la número ${i + 1}`);
+  });
+});
+
 test('los efectos de la ronda 1 coinciden con el guion', () => {
   const { outcomes } = ROUNDS[0];
   assert.deepEqual(outcomes['leave-win'].effects, { lifeSupport: -15, energy: -25, shielding: 5 });
@@ -37,18 +44,27 @@ test('los efectos de la ronda 1 coinciden con el guion', () => {
   assert.deepEqual(outcomes['stay-win'].effects, { lifeSupport: 10, shielding: 5, energy: -5 });
 });
 
-test('los números de ronda están en orden ascendente', () => {
-  ROUNDS.forEach((round, i) => {
-    if (i === 0) {
-      assert.equal(round.number, 1, 'la primera ronda siempre es la número 1');
-    } else {
-      assert.ok(round.number > ROUNDS[i - 1].number, `round-${round.id} debe tener número mayor que el anterior`);
-    }
-  });
+const round02 = ROUNDS.find((r) => r.id === 'round-02');
+test('round-02 es la misión del rover / reconocimiento de terreno', () => {
+  assert.ok(round02, 'round-02 debe existir');
+  assert.equal(round02.number, 2);
+  const types = round02.decision.options.map((o) => o.minigame.type);
+  assert.ok(types.includes('marsRoverDrive'), 'usa marsRoverDrive');
+  assert.ok(types.includes('marsRoutePlanner'), 'usa marsRoutePlanner');
+  assert.ok(types.includes('marsRadarScan'), 'usa marsRadarScan');
+});
+
+const round03 = ROUNDS.find((r) => r.id === 'round-03');
+test('round-03 es la misión de conjunción solar', () => {
+  assert.ok(round03, 'round-03 debe existir');
+  assert.equal(round03.number, 3);
+  assert.equal(round03.title, 'Solar Conjunction');
+  const types = round03.decision.options.map((o) => o.minigame.type);
+  assert.ok(types.includes('offlineKit'), 'usa offlineKit');
+  assert.ok(types.includes('habitatDrill'), 'usa habitatDrill');
 });
 
 const round04 = ROUNDS.find((r) => r.id === 'round-04');
-
 test('round-04 existe en el arreglo como Ronda 4 y tiene exactamente 2 opciones', () => {
   assert.ok(round04, 'round-04 debe estar registrado en ROUNDS');
   assert.equal(round04.number, 4);
@@ -96,13 +112,10 @@ test('round-04 no contiene emojis, porcentajes o nombres de agencias en sus text
     round04.fact.text,
   ].join(' ');
 
-  // No emojis
   const emojiRegex = /[\p{Extended_Pictographic}]/u;
   assert.equal(emojiRegex.test(allTexts), false, 'No debe haber emojis');
 
-  // No percentages
   assert.equal(allTexts.includes('%'), false, 'No debe haber porcentajes');
 
-  // No NASA, DONKI, OSDR
   assert.equal(/NASA|DONKI|OSDR/i.test(allTexts), false, 'No debe mencionar agencias o acronimos');
 });
