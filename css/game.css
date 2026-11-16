@@ -1,0 +1,83 @@
+/* Cabina de la nave: fondo, panel de recursos, escena y astronauta */
+body.game-page { background: #05050f; overflow-x: hidden; }
+
+.cockpit {
+  position: fixed; inset: 0; z-index: 0;
+  background: #05050f url("../assets/cabina.png") center bottom / cover no-repeat;
+  image-rendering: pixelated;
+}
+.cockpit::after { content: ""; position: absolute; inset: 0; background: #05051455; }
+
+.mission {
+  position: relative; z-index: 2; max-width: 760px; margin: 0 auto;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 14px calc(clamp(110px, 24vh, 240px) + 20px);
+}
+
+/* Panel superior */
+.hud {
+  background: #0c0a22e6; border: 4px solid var(--border); border-radius: 8px;
+  padding: 12px 14px 14px; box-shadow: 0 0 30px #000a;
+}
+.hud-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.round-box { flex: 1; min-width: 0; }
+.round-label { margin: 0 0 6px; font-family: var(--font-pixel); font-size: 0.78rem; line-height: 1.4; }
+.progress { height: 10px; background: var(--ink); border: 2px solid var(--border); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--yellow); transition: width 0.5s; }
+.exit-link {
+  font-size: 0.9rem; color: var(--muted); text-decoration: none;
+  border: 2px solid var(--border); border-radius: 6px; padding: 7px 12px;
+}
+.exit-link:hover, .exit-link:focus-visible { color: var(--text); border-color: var(--text); outline: none; }
+
+.meters { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.meter { display: grid; grid-template-columns: 6.5em 3.4em 1fr; align-items: center; column-gap: 10px; }
+.meter .name { font-weight: 600; font-size: 0.95rem; }
+.meter .value { font-family: var(--font-pixel); font-size: 0.7rem; text-align: right; }
+.bar { position: relative; height: 18px; background: var(--ink); border: 3px solid var(--border); border-radius: 4px; overflow: hidden; }
+.bar .fill { height: 100%; width: 0; transition: width 0.6s ease-out; }
+.bar::after { /* segmentos de "píxel" */
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 9px, #0c0a22 9px 11px);
+}
+.meter.energy .fill { background: var(--energy); }
+.meter.life .fill { background: var(--life); }
+.meter.shield .fill { background: var(--shield); }
+.meter.is-low .value { color: var(--bad); }
+.meter.is-low .value::before { content: "\26A0"; margin-right: 2px; }
+.meter.is-low .bar { border-color: var(--bad); }
+
+/* Escena */
+.stage { margin-top: 18px; display: flex; justify-content: center; }
+.stage .letter { font-size: clamp(1rem, 2.6vw, 1.15rem); }
+.stage .letter-text { min-height: 3.4em; }
+
+/* Astronauta dentro de la cabina */
+.astronaut {
+  position: fixed; z-index: 1; pointer-events: none;
+  left: max(8px, 3vw); bottom: calc(1vh + env(safe-area-inset-bottom, 0px));
+  height: clamp(100px, 24vh, 240px); width: auto;
+  image-rendering: pixelated; filter: drop-shadow(0 0 12px #000a);
+  animation: bob 5s ease-in-out infinite;
+}
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
+.astronaut.is-hit { animation: hit 0.5s linear; }
+.astronaut.is-happy { animation: hop 0.6s ease-out; }
+@keyframes hit {
+  0%, 100% { transform: rotate(-4deg) translateX(0); } 20% { transform: rotate(-12deg) translateX(-6px); }
+  40% { transform: rotate(2deg) translateX(6px); } 60% { transform: rotate(-10deg) translateX(-4px); } 80% { transform: rotate(0) translateX(3px); }
+}
+@keyframes hop { 0%, 100% { transform: rotate(-4deg) translateY(0); } 40% { transform: rotate(6deg) translateY(-18px); } }
+
+/* En la cabina las lámparas van a los lados para no tapar el panel */
+body.game-page .alert-lamp { top: 42%; z-index: 1; }
+body.game-page .alert-lamp.left { left: 10px; }
+body.game-page .alert-lamp.right { right: 10px; }
+
+@media (max-width: 480px) {
+  .meter { grid-template-columns: 5.6em 3.2em 1fr; column-gap: 8px; }
+  .meter .name { font-size: 0.85rem; }
+  .sound-btn { font-size: 0.5rem; padding: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .astronaut, .bar .fill, .progress-fill { animation: none !important; transition: none !important; }
+}

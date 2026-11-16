@@ -1,0 +1,295 @@
+
+/* Round 02 — Mars Terrain Reconnaissance.
+   Additive stylesheet: all selectors are scoped to .mars-recon. */
+
+.mars-recon {
+  width: min(100%, 1220px);
+  max-width: none;
+  box-sizing: border-box;
+  color: var(--text, #f8e9d3);
+}
+
+.mars-recon *,
+.mars-recon *::before,
+.mars-recon *::after {
+  box-sizing: border-box;
+}
+
+.mars-recon .mg-help {
+  max-width: 85ch;
+}
+
+.mars-recon .mars-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(235px, 290px);
+  align-items: start;
+  gap: 16px;
+}
+
+.mars-recon .mars-board {
+  min-width: 0;
+  padding: 10px;
+  background: #070a18;
+  border: 3px solid var(--border, #6969a0);
+  border-radius: 6px;
+}
+
+.mars-recon .mars-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 960px;
+  margin: auto;
+  background: #291d25;
+  border: 2px solid #8e695d;
+  image-rendering: pixelated;
+}
+
+.mars-recon .mars-legend {
+  margin: 10px 0 0;
+  color: var(--muted, #bcb9d3);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+.mars-recon[data-route="C"] .mars-legend {
+  display: none;
+}
+
+.mars-recon .mars-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+  padding: 13px;
+  background: #100e2b;
+  border: 3px solid var(--border, #6969a0);
+  border-radius: 6px;
+}
+
+.mars-recon .mars-subtitle {
+  margin: 0;
+  font-family: var(--font-pixel, monospace);
+  font-size: .72rem;
+  line-height: 1.65;
+  color: #f6d59b;
+}
+
+.mars-recon .mars-stat {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.mars-recon .mars-stat-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: .76rem;
+  font-weight: 600;
+}
+
+.mars-recon .mars-stat-value {
+  color: #ffe0a2;
+  font-variant-numeric: tabular-nums;
+}
+
+.mars-recon .mars-stat .bar {
+  width: 100%;
+  min-height: 13px;
+  overflow: hidden;
+  background: #060817;
+  border: 2px solid var(--border, #6969a0);
+  border-radius: 3px;
+}
+
+.mars-recon .mars-stat .bar .fill {
+  height: 100%;
+  transition: width 120ms steps(8, end);
+}
+
+.mars-recon .mars-battery-fill {
+  background: var(--energy, #f5c85e);
+}
+
+.mars-recon .mars-progress-fill {
+  background: var(--good, #6de6a2);
+}
+
+.mars-recon .mars-controls {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.mars-recon .mars-control-label {
+  margin: 3px 0 0;
+  font-family: var(--font-pixel, monospace);
+  font-size: .6rem;
+  line-height: 1.7;
+  color: #aebcff;
+}
+
+.mars-recon .mars-status {
+  margin: 0;
+  padding: 10px;
+  background: #08091d;
+  border-left: 3px solid #8bd8d9;
+  font-size: .88rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.mars-recon .mars-end {
+  justify-self: start;
+  text-align: left;
+}
+
+.mars-recon .mars-action {
+  background: #24404b;
+  border-color: #72c8c7;
+}
+
+.mars-recon .mars-action:hover,
+.mars-recon .mars-action:focus-visible {
+  border-color: #f7d38e;
+}
+
+.mars-recon .mars-arrows {
+  display: grid;
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(2, 52px);
+  gap: 5px;
+  justify-content: center;
+}
+
+.mars-recon .mars-arrow {
+  padding: 5px;
+  min-width: 0;
+  min-height: 0;
+  font-size: 1.35rem;
+  touch-action: none;
+  user-select: none;
+}
+
+.mars-recon .mars-waypoints {
+  display: grid;
+  gap: 7px;
+}
+
+.mars-recon .mars-waypoint {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  background: #19173d;
+  color: var(--text, #fff);
+  border: 2px solid var(--border, #6969a0);
+  border-radius: 4px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mars-recon .mars-waypoint.selected {
+  border-color: #7de7a9;
+  background: #17372f;
+}
+
+.mars-recon .mars-waypoint:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.mars-recon .mars-waypoint:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+.mars-recon .mars-reading {
+  margin: 0;
+  padding: 8px;
+  background: #090d20;
+  border: 1px solid #526278;
+  font-size: .82rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.mars-recon .mars-select {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px;
+  background: #171833;
+  color: var(--text, #fff);
+  border: 2px solid var(--border, #6969a0);
+  border-radius: 4px;
+  font: inherit;
+}
+
+.mars-recon .mars-slider {
+  width: 100%;
+  accent-color: #77e4e5;
+  cursor: pointer;
+}
+
+.mars-recon .mars-bearing {
+  color: #7ce8e7;
+  font-variant-numeric: tabular-nums;
+}
+
+.mars-recon button:disabled {
+  cursor: default;
+}
+
+/* Responsive layout */
+
+@media (max-width: 900px) {
+  .mars-recon .mars-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .mars-recon .mars-sidebar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mars-recon .mars-subtitle,
+  .mars-recon .mars-controls,
+  .mars-recon .mars-status,
+  .mars-recon .mars-end {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .mars-recon {
+    padding: 12px;
+  }
+
+  .mars-recon .mars-board {
+    padding: 5px;
+  }
+
+  .mars-recon .mars-sidebar {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .mars-recon .mars-stat {
+    grid-column: 1;
+  }
+
+  .mars-recon .mars-arrows {
+    grid-template-columns: repeat(3, 48px);
+    grid-template-rows: repeat(2, 48px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mars-recon .mars-stat .bar .fill {
+    transition: none;
+  }
+}
