@@ -17,7 +17,6 @@ import { el, focusTitle, mount, sleep } from '../ui/dom.js';
 
 import {
   MARS_RECON,
-  MARS_MAP,
   SCIENCE_SITES,
   RADAR_SECTORS,
   INITIAL_BATTERY,
@@ -656,7 +655,7 @@ export function runMarsRecon(container, { route = 'A' } = {}) {
         String(session.battery)
       );
 
-      let progress = 0;
+      let progress;
       let total = 3;
 
       if (selectedRoute === 'A') {
