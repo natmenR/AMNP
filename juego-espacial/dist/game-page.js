@@ -178,6 +178,155 @@
     }
   };
 
+  // src/data/rounds/round-02.js
+  var round02 = {
+    id: 'round-02',
+  number: 2,
+  title: 'MARS TERRAIN RECONNAISSANCE',
+  speaker: 'AURA',
+  alert: false,
+
+  report: {
+    liveData: false,
+    pages: [
+      {
+        text: 'MISSION LOG — DAY 980. After months of travel, your crew has reached Mars. The habitat is operational, but the surrounding terrain remains largely unexplored.',
+      },
+      {
+        text: 'AURA: Commander, our orbital maps are incomplete. Rocky formations, unstable ground, and unknown surface conditions could threaten future expeditions.',
+      },
+      {
+        text: 'MISSION CONTROL: Your next objective is to identify three scientific locations and gather enough information to establish a safe exploration route.',
+      },
+      {
+        text: 'AURA: Our rover has limited battery capacity. Every movement, scan, and navigation decision must be carefully planned.',
+      },
+    ],
+  },
+
+  decision: {
+    pages: [
+      {
+        text: 'AURA: I have identified three possible reconnaissance strategies. Each one offers different advantages and risks.',
+      },
+      {
+        text: 'MISSION CONTROL: Choose your approach carefully. Your decision will determine how the crew explores the Martian surface.',
+      },
+    ],
+
+    title: 'Round 2',
+    prompt: 'How will you explore the Martian terrain?',
+
+    options: [
+      {
+        id: 'rocky-shortcut',
+        label: 'A — Rocky Shortcut',
+        minigame: {
+          type: 'marsRoverDrive',
+          intro: 'Drive the rover across the Martian surface. Reach and scan all three scientific sites, manage your battery, and return safely to the habitat.',
+        },
+        outcomes: {
+          win: 'rover-win',
+          lose: 'rover-lose',
+        },
+      },
+
+      {
+        id: 'surveyed-corridor',
+        label: 'B — Surveyed Corridor',
+        minigame: {
+          type: 'marsRoutePlanner',
+          intro: 'Plan an efficient route between the three scientific sites. Consider terrain costs, available battery, and the safest path back to the habitat.',
+        },
+        outcomes: {
+          win: 'planner-win',
+          lose: 'planner-lose',
+        },
+      },
+
+      {
+        id: 'remote-mapping',
+        label: 'C — Remote Mapping',
+        minigame: {
+          type: 'marsRadarScan',
+          intro: 'Operate the remote radar system. Adjust its orientation, scan the terrain, and classify the detected sectors using a limited number of attempts.',
+        },
+        outcomes: {
+          win: 'radar-win',
+          lose: 'radar-lose',
+        },
+      },
+    ],
+  },
+
+  outcomes: {
+    'rover-win': {
+      tone: 'good',
+      text: 'AURA: Reconnaissance complete. The rover successfully scanned all three scientific sites and returned to the habitat. Your crew now has valuable terrain data for future expeditions.',
+      effects: {
+        energy: -5,
+        lifeSupport: 0,
+        shielding: 0,
+      },
+    },
+
+    'rover-lose': {
+      tone: 'mixed',
+      text: 'AURA: The rover expedition encountered unexpected difficulties. Additional resources were required to recover the mission, and some scientific observations remain incomplete.',
+      effects: {
+        energy: -12,
+        lifeSupport: -3,
+        shielding: 0,
+      },
+    },
+
+    'planner-win': {
+      tone: 'good',
+      text: 'MISSION CONTROL: Excellent navigation planning. Your selected route minimized unnecessary movement, allowing the rover to complete its scientific survey while preserving valuable energy.',
+      effects: {
+        energy: -3,
+        lifeSupport: 0,
+        shielding: 0,
+      },
+    },
+
+    'planner-lose': {
+      tone: 'mixed',
+      text: 'AURA: The planned route proved inefficient. The rover consumed additional energy while navigating difficult terrain, forcing the crew to adjust the expedition.',
+      effects: {
+        energy: -10,
+        lifeSupport: -2,
+        shielding: 0,
+      },
+    },
+
+    'radar-win': {
+      tone: 'good',
+      text: 'AURA: Remote terrain analysis complete. The radar successfully identified the relevant surface sectors, allowing the crew to gather scientific information without exposing the rover to hazardous terrain.',
+      effects: {
+        energy: -4,
+        lifeSupport: 0,
+        shielding: 0,
+      },
+    },
+
+    'radar-lose': {
+      tone: 'mixed',
+      text: 'AURA: The radar survey produced incomplete results. Several sectors remain uncertain, and additional scans will be necessary before the crew can safely explore the area.',
+      effects: {
+        energy: -8,
+        lifeSupport: 0,
+        shielding: -3,
+      },
+    },
+  },
+
+  fact: {
+    title: 'Based on a true story',
+    text: 'NASA Mars rovers use onboard navigation systems, cameras, and scientific instruments to investigate the Martian surface. Because communication with Earth involves delays, rovers can perform certain navigation tasks autonomously while mission teams plan their exploration routes.',
+  },
+};
+
   // src/data/rounds/round-04.js
   var round04 = {
     id: "round-04",
@@ -252,7 +401,7 @@
   };
 
   // src/data/rounds/index.js
-  var ROUNDS = [round01, round04];
+  var ROUNDS = [round01, round02, round04];
 
   // src/services/storage.js
   function readString(key) {
@@ -613,238 +762,92 @@
     });
   }
 
-  // src/minigames/flight-model.js
-  var FLIGHT = Object.freeze({
-    range: 100,
-    // el marcador vive entre -100 y +100
-    zone: 22,
-    // zona verde: -22 a +22
-    pulseSpeed: 38,
-    // empuje de cada propulsor
-    pulseCost: 4,
-    // Energy que gasta cada propulsión (de 100)
-    damping: 0.7,
-    baseRadiation: 4.2,
-    // por segundo
-    outsideRadiation: 4,
-    // extra por segundo si el marcador está fuera de la zona
-    progressRate: 12.5,
-    // por segundo dentro de la zona (8 s para completar)
-    presets: Object.freeze({
-      mild: { drift: 120, flashEvery: [2.6, 4.2], flashSize: [14, 26] },
-      medium: { drift: 190, flashEvery: [2, 3.4], flashSize: [18, 32] },
-      strong: { drift: 270, flashEvery: [1.5, 2.6], flashSize: [24, 40] }
-    })
-  });
-  var between = (rng, [min, max]) => min + rng() * (max - min);
-  function createFlightModel(level = "medium", rng = Math.random) {
-    const preset = FLIGHT.presets[level] ?? FLIGHT.presets.medium;
-    return {
-      preset,
-      rng,
-      pos: 0,
-      vel: 0,
-      energy: 100,
-      radiation: 0,
-      progress: 0,
-      time: 0,
-      nextFlash: between(rng, preset.flashEvery),
-      flashCount: 0,
-      status: "running",
-      reason: null
-    };
-  }
-  var isInsideZone = (model) => Math.abs(model.pos) <= FLIGHT.zone;
-  function pulse(model, dir) {
-    if (model.status !== "running" || model.energy <= 0) return false;
-    model.vel += dir * FLIGHT.pulseSpeed;
-    model.energy = Math.max(0, model.energy - FLIGHT.pulseCost);
-    if (model.energy <= 0) finish(model, "lose", "energy");
-    return true;
-  }
-  function finish(model, status, reason = null) {
-    if (model.status === "running") {
-      model.status = status;
-      model.reason = reason;
-    }
-  }
-  function step(model, dt) {
-    if (model.status !== "running") return false;
-    const { preset, rng } = model;
-    model.time += dt;
-    model.vel += (rng() - 0.5) * 2 * preset.drift * dt;
-    model.vel *= Math.max(0, 1 - FLIGHT.damping * dt);
-    model.pos += model.vel * dt;
-    let flashed = false;
-    if (model.time >= model.nextFlash) {
-      model.pos += (rng() < 0.5 ? -1 : 1) * between(rng, preset.flashSize);
-      model.nextFlash = model.time + between(rng, preset.flashEvery);
-      model.flashCount += 1;
-      flashed = true;
-    }
-    if (Math.abs(model.pos) > FLIGHT.range) {
-      model.pos = Math.sign(model.pos) * FLIGHT.range;
-      model.vel *= -0.3;
-    }
-    const inside = isInsideZone(model);
-    model.radiation += (FLIGHT.baseRadiation + (inside ? 0 : FLIGHT.outsideRadiation)) * dt;
-    if (inside) model.progress += FLIGHT.progressRate * dt;
-    if (model.progress >= 100) finish(model, "win");
-    else if (model.radiation >= 100) finish(model, "lose", "radiation");
-    return flashed;
-  }
-
   // src/minigames/flight.js
-  var LEVEL_NAMES = { mild: "Mild", medium: "Medium", strong: "Strong" };
-  var STEP = 1 / 60;
-  function runManualFlight(container, { level = "medium" } = {}) {
+  var SYSTEMS = ["Solar Panels", "Flight Computer", "Star Tracker", "Thrusters"];
+  var SWITCHES = [
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 0]
+  ];
+  var MAX_SWITCHES = 4;
+  function runManualFlight(container) {
     return new Promise((resolve) => {
-      const model = createFlightModel(level);
-      const staticCanvas = el("canvas", { class: "static-canvas", "aria-hidden": "true" });
-      const marker = el("img", { class: "marker", src: "assets/nave.png", alt: "" });
-      const flash = el("div", { class: "flash" });
+      const powered = [true, false, true, false];
+      let remaining = MAX_SWITCHES;
+      let ended = false;
+      const meters = SYSTEMS.map(() => el("p", { class: "dir-label" }));
+      const counter = el("p", { class: "mg-counter" });
       const status = el("p", { class: "mg-status", role: "status" });
-      const makeMeter = (label, className) => {
-        const fill = el("div", { class: `fill ${className}` });
-        const bar = el("div", { class: "bar", role: "progressbar", "aria-label": label, "aria-valuemin": "0", "aria-valuemax": "100" }, fill);
-        return { fill, bar, row: el("div", { class: "mg-meter" }, el("span", { class: "mg-meter-label" }, label), bar) };
-      };
-      const progressMeter = makeMeter("Direction check", "check");
-      const energyMeter = makeMeter("Thruster energy", "energy");
-      const radiationMeter = makeMeter("Radiation alarm", "radiation");
-      const leftButton = el("button", { type: "button", class: "mg-button", "aria-label": "Left thruster" }, "\u25C0 Left thruster");
-      const rightButton = el("button", { type: "button", class: "mg-button", "aria-label": "Right thruster" }, "Right thruster \u25B6");
-      const skipButton = el("button", { type: "button", class: "mg-skip" }, "Skip (counts as a miss)");
-      const title = el("h2", { class: "mg-title", tabindex: "-1" }, "Manual flight");
+      const buttons = SWITCHES.map(
+        ([first, second]) => el(
+          "button",
+          {
+            type: "button",
+            class: "mg-button",
+            on: { click: () => flip(first, second) }
+          },
+          `${SYSTEMS[first]} / ${SYSTEMS[second]}`
+        )
+      );
       const root = el(
         "div",
         { class: "minigame flight" },
-        title,
-        el("p", { class: "mg-help" }, "Keep the ship straight! Push the ship into the green zone and hold it there until the direction check is complete. Every push uses Energy, and the radiation alarm keeps rising."),
+        el("h2", { class: "mg-title", tabindex: "-1" }, "Power Grid"),
+        el(
+          "p",
+          { class: "mg-help" },
+          "Restore power to all four systems. Each switch flips both systems on its label: ON becomes OFF, and OFF becomes ON. You have four moves."
+        ),
         el(
           "div",
-          { class: "star-screen" },
-          staticCanvas,
-          el("div", { class: "gauge", "aria-hidden": "true" }, el("div", { class: "zone" }), marker),
-          flash,
-          el("p", { class: "screen-label", "aria-hidden": "true" }, `STAR TRACKER \xB7 STORM: ${(LEVEL_NAMES[level] ?? "Medium").toUpperCase()}`)
+          { class: "card-row" },
+          meters.map((meter) => el("div", { class: "panel" }, meter))
         ),
-        el("div", { class: "mg-meters" }, progressMeter.row, energyMeter.row, radiationMeter.row),
-        el("div", { class: "mg-controls" }, leftButton, rightButton),
-        el("p", { class: "mg-hint" }, "Tip: use the \u2190 \u2192 arrow keys. Pushing too often wastes Energy."),
-        status,
-        skipButton
+        el("div", { class: "mg-controls" }, buttons),
+        counter,
+        status
       );
-      mount(container, root);
-      focusTitle(root);
-      const stopStatic = startStatic(staticCanvas);
-      let frame = 0;
-      let last = performance.now();
-      let accumulator = 0;
-      let warned = false;
-      let ended = false;
-      const render = () => {
-        const left = 50 + model.pos / FLIGHT.range * 50;
-        marker.style.left = `${left}%`;
-        progressMeter.fill.style.width = `${Math.min(100, model.progress)}%`;
-        energyMeter.fill.style.width = `${model.energy}%`;
-        radiationMeter.fill.style.width = `${Math.min(100, model.radiation)}%`;
-        progressMeter.bar.setAttribute("aria-valuenow", String(Math.round(model.progress)));
-        energyMeter.bar.setAttribute("aria-valuenow", String(Math.round(model.energy)));
-        radiationMeter.bar.setAttribute("aria-valuenow", String(Math.round(model.radiation)));
-        marker.classList.toggle("is-inside", isInsideZone(model));
-      };
-      const cleanup = () => {
-        cancelAnimationFrame(frame);
-        stopStatic();
-        document.removeEventListener("keydown", onKey);
-      };
-      const end = async (result) => {
-        if (ended) return;
+      function render() {
+        meters.forEach((meter, index) => {
+          const on = powered[index];
+          meter.textContent = `${SYSTEMS[index]}: ${on ? "ON" : "OFF"}`;
+          meter.style.color = on ? "var(--good)" : "var(--bad)";
+        });
+        counter.textContent = `Moves left: ${remaining}`;
+      }
+      async function finish(result) {
         ended = true;
-        cleanup();
-        leftButton.disabled = true;
-        rightButton.disabled = true;
-        skipButton.disabled = true;
+        buttons.forEach((button2) => {
+          button2.disabled = true;
+        });
         if (result === "win") {
-          status.textContent = "Direction checked! The ship is flying straight.";
+          status.textContent = "Power restored. The ship fired a short thruster pulse and reset the star tracker.";
           sound.win();
         } else {
-          status.textContent = model.reason === "energy" ? "Out of Energy! The thrusters went quiet." : "The radiation alarm is too high! Back to the shelter!";
+          status.textContent = "The power grid is still offline. Return to the shelter!";
           sound.lose();
         }
         await sleep(TIMING.minigameEndMs);
-        resolve({ result, stats: { time: model.time, flashes: model.flashCount, energyLeft: Math.round(model.energy), reason: model.reason } });
-      };
-      const doPulse = (dir) => {
-        if (ended || !pulse(model, dir)) return;
-        sound.thrust();
+        resolve({ result, stats: { moves: MAX_SWITCHES - remaining } });
+      }
+      function flip(first, second) {
+        if (ended) return;
+        powered[first] = !powered[first];
+        powered[second] = !powered[second];
+        remaining -= 1;
         render();
-      };
-      function onKey(event) {
-        if (event.repeat) return;
-        if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") {
-          event.preventDefault();
-          doPulse(-1);
-        } else if (event.key === "ArrowRight" || event.key === "d" || event.key === "D") {
-          event.preventDefault();
-          doPulse(1);
+        if (powered.every(Boolean)) {
+          finish("win");
+        } else if (remaining === 0) {
+          finish("lose");
+        } else {
+          status.textContent = `${SYSTEMS[first]} and ${SYSTEMS[second]} changed state.`;
         }
       }
-      const loop = (now) => {
-        accumulator += Math.min(0.1, (now - last) / 1e3);
-        last = now;
-        while (accumulator >= STEP && model.status === "running") {
-          if (step(model, STEP)) {
-            sound.glitch();
-            flash.classList.remove("on");
-            void flash.offsetWidth;
-            flash.classList.add("on");
-          }
-          accumulator -= STEP;
-        }
-        if (!warned && model.radiation >= 70) {
-          warned = true;
-          sound.warning();
-          status.textContent = "Warning: the radiation alarm is getting high!";
-        }
-        render();
-        if (model.status !== "running") {
-          end(model.status);
-          return;
-        }
-        frame = requestAnimationFrame(loop);
-      };
-      leftButton.addEventListener("pointerdown", (event) => {
-        event.preventDefault();
-        doPulse(-1);
-      });
-      rightButton.addEventListener("pointerdown", (event) => {
-        event.preventDefault();
-        doPulse(1);
-      });
-      leftButton.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          doPulse(-1);
-        }
-      });
-      rightButton.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          doPulse(1);
-        }
-      });
-      skipButton.addEventListener("click", () => {
-        model.reason = "skipped";
-        end("lose");
-      });
-      document.addEventListener("keydown", onKey);
+      mount(container, root);
       render();
-      frame = requestAnimationFrame((now) => {
-        last = now;
-        loop(now);
-      });
+      focusTitle(root);
     });
   }
 
@@ -1077,22 +1080,148 @@
     });
   }
 
+  // src/minigames/solar-conjunction.js
+  function openPuzzle(container, title, instructions) {
+    const board = el("div", { class: "card-row" });
+    const controls = el("div", { class: "mg-controls" });
+    const status = el("p", { class: "mg-status", role: "status" });
+    const root = el(
+      "div",
+      { class: "minigame flight" },
+      el("h2", { class: "mg-title", tabindex: "-1" }, title),
+      el("p", { class: "mg-help" }, instructions),
+      board,
+      controls,
+      status
+    );
+    mount(container, root);
+    focusTitle(root);
+    return { board, controls, status };
+  }
+  function button(label, click) {
+    return el("button", {
+      class: "mg-button",
+      type: "button",
+      on: { click }
+    }, label);
+  }
+  function runOfflineKit(container) {
+    return new Promise((resolve) => {
+      const { board, controls, status } = openPuzzle(
+        container,
+        "Pack an Offline Kit",
+        "Fit instructions, daily checks, and a report template into six storage units."
+      );
+      const files = [
+        ["Safety checklist", 2, true],
+        ["Rover photo album", 3, false],
+        ["Base manual", 2, true],
+        ["Crew movie", 4, false],
+        ["Mission log", 2, true]
+      ];
+      const packed = /* @__PURE__ */ new Set();
+      let used = 0;
+      status.textContent = "Storage: 0 / 6";
+      files.forEach(([label, size], index) => {
+        const control = button(`${label} (${size})`, () => {
+          if (packed.delete(index)) {
+            used -= size;
+          } else if (used + size <= 6) {
+            packed.add(index);
+            used += size;
+          } else {
+            status.textContent = `That file will not fit. Storage: ${used} / 6`;
+            return;
+          }
+          const saved = packed.has(index);
+          control.setAttribute("aria-pressed", String(saved));
+          control.textContent = `${saved ? "Saved: " : ""}${label} (${size})`;
+          status.textContent = `Storage: ${used} / 6`;
+        });
+        control.setAttribute("aria-pressed", "false");
+        board.append(control);
+      });
+      controls.append(button("Test Offline Kit", () => {
+        const win = files.every((file, index) => !file[2] || packed.has(index));
+        resolve({ result: win ? "win" : "lose", stats: { files: packed.size } });
+      }));
+    });
+  }
+  function runHabitatDrill(container) {
+    return new Promise((resolve) => {
+      const { board, controls, status } = openPuzzle(
+        container,
+        "Run the Habitat Drill",
+        "EARTH RADIO OFFLINE. Read the onboard manual and respond to each alarm."
+      );
+      const alarms = [
+        ["Airflow is low.", "A blocked filter can slow the airflow.", "Replace the air filter"],
+        ["The habitat is getting cold.", "The backup heater can warm the habitat.", "Start the backup heater"],
+        ["The battery reserve is low.", "Keep essential systems on and pause optional work.", "Pause the science lab"]
+      ];
+      const panel = el("p", { class: "panel" });
+      board.append(panel);
+      let fixed = 0;
+      let errors = 0;
+      function showAlarm() {
+        const [warning, clue] = alarms[fixed];
+        panel.textContent = `Alarm ${fixed + 1} / ${alarms.length}: ${warning} Manual: ${clue}`;
+      }
+      showAlarm();
+      const actions = [
+        "Start the backup heater",
+        "Pause the science lab",
+        "Replace the air filter"
+      ];
+      actions.forEach((action) => {
+        controls.append(button(action, () => {
+          if (fixed === alarms.length || errors === 2) return;
+          if (action === alarms[fixed][2]) {
+            fixed += 1;
+            if (fixed === alarms.length) {
+              resolve({ result: "win", stats: { fixed, errors } });
+              return;
+            }
+            showAlarm();
+            status.textContent = "System restored. Check the next alarm.";
+          } else {
+            errors += 1;
+            if (errors === 2) {
+              resolve({ result: "lose", stats: { fixed, errors } });
+              return;
+            }
+            status.textContent = "That did not clear the alarm. Read the manual and try again.";
+          }
+        }));
+      });
+    });
+  }
+
   // src/minigames/types.js
-  var MINIGAME_TYPES = Object.freeze(["manualFlight", "dataCheck", "shieldZap", "rocketBoost"]);
+  var MINIGAME_TYPES = Object.freeze([
+    "manualFlight",
+    "dataCheck",
+    "shieldZap",
+    "rocketBoost",
+    "offlineKit",
+    "habitatDrill"
+  ]);
 
   // src/minigames/index.js
   var MINIGAMES = {
     manualFlight: runManualFlight,
     dataCheck: runDataCheck,
     shieldZap: runShieldZap,
-    rocketBoost: runRocketBoost
+    rocketBoost: runRocketBoost,
+    offlineKit: runOfflineKit,
+    habitatDrill: runHabitatDrill
   };
   for (const type of MINIGAME_TYPES) {
-    if (!MINIGAMES[type]) throw new Error(`Minigame "${type}" is listed in types.js but not registered`);
+    if (!MINIGAMES[type]) throw new Error("Minigame not registered: " + type);
   }
   function runMinigame(type, container, config = {}) {
     const run = MINIGAMES[type];
-    if (!run) throw new Error(`Unknown minigame type: "${type}"`);
+    if (!run) throw new Error("Unknown minigame: " + type);
     return run(container, config);
   }
 
@@ -1411,7 +1540,7 @@
     if (days === 1825) return "last 5 years";
     return days ? `last ${days} days` : "recent years";
   }
-  var LEVEL_NAMES2 = { mild: "mild", medium: "medium", strong: "strong" };
+  var LEVEL_NAMES = { mild: "mild", medium: "medium", strong: "strong" };
   var plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
   function buildLiveDataPage(summary) {
     const base = "Mission Control: this is not just a game. Space weather scientists track storms like this one every day, and NASA keeps a public log of them.";
@@ -1430,7 +1559,7 @@
           },
           {
             term: "Storm strength in this game",
-            text: `${LEVEL_NAMES2[summary.level]}, based on how many eruptions were linked to that real storm.`
+            text: `${LEVEL_NAMES[summary.level]}, based on how many eruptions were linked to that real storm.`
           }
         ]
       };
@@ -1561,12 +1690,12 @@
   }
 
   // src/ui/sound-toggle.js
-  function initSoundToggle(button) {
+  function initSoundToggle(button2) {
     const paint = () => {
-      button.textContent = `Sound: ${sound.isMuted() ? "off" : "on"}`;
-      button.setAttribute("aria-pressed", String(!sound.isMuted()));
+      button2.textContent = `Sound: ${sound.isMuted() ? "off" : "on"}`;
+      button2.setAttribute("aria-pressed", String(!sound.isMuted()));
     };
-    button.addEventListener("click", () => {
+    button2.addEventListener("click", () => {
       sound.toggle();
       paint();
     });
