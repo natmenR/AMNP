@@ -5,7 +5,7 @@
 
 export const GAME = Object.freeze({
   playerName: 'D. Diaz',
-  totalRounds: 10,
+  totalRounds: 4,
   totalDays: 300,
 });
 
