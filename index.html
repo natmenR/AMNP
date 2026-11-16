@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Survive in Space</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Pixelify+Sans:wght@400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/start.css">
+  <link rel="stylesheet" href="css/letter.css">
+  <link rel="stylesheet" href="css/alert.css">
+</head>
+<body class="start-page">
+  <div class="stars far" aria-hidden="true"></div>
+  <div class="stars near" aria-hidden="true"></div>
+
+  <main class="start">
+    <header>
+      <h1>Survive<br>in Space</h1>
+      <p class="tagline">Manage your energy, life support and shielding. Every decision costs something!</p>
+    </header>
+
+    <img class="ship" src="assets/nave-pixel.png" alt="The spaceship Ares" width="288" height="408">
+
+    <button id="play-button" class="btn play-button" type="button">&#9654; Play</button>
+  </main>
+
+  <!-- Intro: aparece cuando la nave ya subió -->
+  <div id="intro" class="intro" hidden></div>
+
+  <!-- Alerta roja: se enciende en el último mensaje de la intro -->
+  <div class="alert-lights" aria-hidden="true"></div>
+  <div class="alert-lamp left" aria-hidden="true"></div>
+  <div class="alert-lamp right" aria-hidden="true"></div>
+  <div class="alert-banner" role="status">&#9888; ALERT &#9888;</div>
+
+  <div class="fade" aria-hidden="true"></div>
+
+  <button id="sound-toggle" class="sound-btn fixed" type="button" aria-pressed="true">Sound: on</button>
+  <footer>Inspired by NASA open data</footer>
+
+  <script src="dist/start-page.js" defer></script>
+</body>
+</html>
