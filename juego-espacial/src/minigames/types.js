@@ -5,4 +5,7 @@ export const MINIGAME_TYPES = Object.freeze([
   'rocketBoost',
   'offlineKit',
   'habitatDrill',
+  'marsRoverDrive',
+  'marsRoutePlanner',
+  'marsRadarScan',
 ]);
