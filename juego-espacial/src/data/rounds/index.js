@@ -1,8 +1,6 @@
-/**
- * Lista de rondas, en orden. Hay 10 rondas en total (GAME.totalRounds);
- * cuando escribas la ronda 2, impórtala aquí y agrégala al arreglo.
- */
 import { round01 } from './round-01.js';
+import { round02 } from './round-02.js';
+import { round03 } from './round-03.js';
+import { round04 } from './round-04.js';
 
-/** @type {import('./round-01.js').Round[]} */
-export const ROUNDS = [round01];
+export const ROUNDS = [round01, round02, round03, round04];
