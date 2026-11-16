@@ -2,7 +2,7 @@
   // src/config.js
   var GAME = Object.freeze({
     playerName: "D. Diaz",
-    totalRounds: 10,
+    totalRounds: 4,
     totalDays: 300
   });
   var PAGES = Object.freeze({
@@ -178,8 +178,81 @@
     }
   };
 
+  // src/data/rounds/round-04.js
+  var round04 = {
+    id: "round-04",
+    number: 4,
+    title: "Return Home",
+    speaker: "Ship System",
+    alert: true,
+    report: {
+      liveData: false,
+      pages: [
+        {
+          text: "Mission complete on Mars! Our cargo bay is packed with red rocks and science samples, and it is time to fly home to Earth.",
+          notes: [{ term: "Alert", text: "Engines ready. Set course for Earth." }]
+        }
+      ]
+    },
+    decision: {
+      pages: [
+        {
+          text: "To escape Mars, our rockets need a huge burst of power. At the same time, invisible space rays are shooting across our path, and our water tanks are the best shield we have."
+        }
+      ],
+      title: "Ready for Blast-Off",
+      prompt: "Water protects us from space rays, but heavy water tanks make the rocket harder to lift. How should we prepare the ship for the trip home?",
+      options: [
+        {
+          id: "heavy-shield",
+          label: "Keep the Heavy Water Shield: Keep all water tanks full around the cabin to block space rays, even though the extra weight uses up a lot of battery power.",
+          minigame: {
+            type: "shieldZap",
+            intro: "Space rays are heading toward the cabin. Tap the incoming rays to block them before they hit the ship."
+          },
+          outcomes: { win: "shield-win", lose: "shield-lose" }
+        },
+        {
+          id: "light-rocket",
+          label: "Fly Light and Fast: Drop extra cargo and water to make the rocket super light and save battery power, leaving a thinner shield for the trip home.",
+          minigame: {
+            type: "rocketBoost",
+            intro: "Time to launch! Hit the launch button when the power bar reaches the green zone to blast away from Mars."
+          },
+          outcomes: { win: "boost-win", lose: "boost-lose" }
+        }
+      ]
+    },
+    outcomes: {
+      "shield-win": {
+        tone: "good",
+        text: "Great job! The water shield blocked the space rays and kept the crew safe, though lifting all that water drained a lot of battery power.",
+        effects: { energy: -20, shielding: 15 }
+      },
+      "shield-lose": {
+        tone: "mixed",
+        text: "Some space rays slipped past the shield and drained our systems, and the heavy ship used up a lot of battery power.",
+        effects: { energy: -30, lifeSupport: -10, shielding: 10 }
+      },
+      "boost-win": {
+        tone: "good",
+        text: "Awesome launch! The light rocket shot toward Earth with plenty of battery left, though the thinner shield let a little space radiation through.",
+        effects: { energy: -5, shielding: -10 }
+      },
+      "boost-lose": {
+        tone: "bad",
+        text: "Rough takeoff! We burned extra battery fighting Mars gravity, and our thinner shield barely held back the space rays.",
+        effects: { energy: -25, lifeSupport: -15, shielding: -10 }
+      }
+    },
+    fact: {
+      title: "Space Science Note",
+      text: "Water is a great shield in space because it blocks invisible rays from the Sun and deep space. Since water is very heavy, astronauts always have to balance carrying enough water for safety against saving rocket power to get home."
+    }
+  };
+
   // src/data/rounds/index.js
-  var ROUNDS = [round01];
+  var ROUNDS = [round01, round04];
 
   // src/services/storage.js
   function readString(key) {
@@ -775,13 +848,244 @@
     });
   }
 
+  // src/minigames/shield-zap.js
+  var ZAP_GOAL = 6;
+  var GAME_DURATION = 18;
+  function runShieldZap(container, _config = {}) {
+    return new Promise((resolve) => {
+      let zapped = 0;
+      let timeLeft = GAME_DURATION;
+      let ended = false;
+      let spawnTimer = null;
+      let countdownTimer = null;
+      const status = el("p", { class: "mg-status", role: "status" });
+      const zapCount = el("span", { class: "sz-count" }, `0 / ${ZAP_GOAL}`);
+      const timeBadge = el("span", { class: "sz-time" }, `${timeLeft}s`);
+      const field = el("div", { class: "sz-field", "aria-label": "Shield field \u2014 click the space rays!" });
+      const skipButton = el("button", { type: "button", class: "mg-skip" }, "Skip (counts as a miss)");
+      const root = el(
+        "div",
+        { class: "minigame shield-zap" },
+        el("h2", { class: "mg-title", tabindex: "-1" }, "Shield Zap"),
+        el("p", { class: "mg-help" }, `Space rays are coming! Click or tap each ray to zap it. Block ${ZAP_GOAL} rays before time runs out!`),
+        el(
+          "div",
+          { class: "sz-hud" },
+          el("span", {}, "Zapped: ", zapCount),
+          timeBadge
+        ),
+        field,
+        status,
+        skipButton
+      );
+      mount(container, root);
+      focusTitle(root);
+      const cleanup = () => {
+        clearInterval(spawnTimer);
+        clearInterval(countdownTimer);
+      };
+      const end = async (result) => {
+        if (ended) return;
+        ended = true;
+        cleanup();
+        skipButton.disabled = true;
+        field.querySelectorAll(".sz-ray").forEach((r) => r.remove());
+        if (result === "win") {
+          status.textContent = `Amazing! You blocked all ${ZAP_GOAL} rays! The shield held!`;
+          sound.win();
+        } else {
+          status.textContent = "Time is up! Some rays got through.";
+          sound.lose();
+        }
+        await sleep(TIMING.minigameEndMs);
+        resolve({ result, stats: { zapped, timeLeft: Math.max(0, Math.round(timeLeft)) } });
+      };
+      const spawnRay = () => {
+        if (ended) return;
+        const fromLeft = Math.random() < 0.5;
+        const topPct = 10 + Math.random() * 80;
+        const ray = el("div", {
+          class: `sz-ray ${fromLeft ? "from-left" : "from-right"}`,
+          role: "button",
+          tabindex: "0",
+          "aria-label": "Space ray \u2014 click to zap!"
+        }, fromLeft ? ">>>" : "<<<");
+        ray.style.top = `${topPct}%`;
+        const zapRay = () => {
+          if (ended || ray.classList.contains("sz-zapped")) return;
+          ray.classList.add("sz-zapped");
+          sound.good();
+          zapped += 1;
+          zapCount.textContent = `${zapped} / ${ZAP_GOAL}`;
+          setTimeout(() => ray.remove(), 300);
+          if (zapped >= ZAP_GOAL) end("win");
+        };
+        ray.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          zapRay();
+        });
+        ray.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            zapRay();
+          }
+        });
+        field.append(ray);
+        setTimeout(() => {
+          if (!ray.classList.contains("sz-zapped")) ray.remove();
+        }, 3e3);
+      };
+      countdownTimer = setInterval(() => {
+        if (ended) return;
+        timeLeft -= 1;
+        timeBadge.textContent = `${timeLeft}s`;
+        if (timeLeft <= 5) timeBadge.classList.add("sz-urgent");
+        if (timeLeft <= 0) end("lose");
+      }, 1e3);
+      spawnRay();
+      spawnTimer = setInterval(spawnRay, 2e3);
+      skipButton.addEventListener("click", () => end("lose"));
+    });
+  }
+
+  // src/minigames/rocket-boost.js
+  var HITS_NEEDED = 3;
+  var MAX_MISSES = 3;
+  var NEEDLE_SPEED = 65;
+  function runRocketBoost(container, _config = {}) {
+    return new Promise((resolve) => {
+      let needlePos = 15;
+      let direction = 1;
+      let hits = 0;
+      let misses = 0;
+      let frame = 0;
+      let last = performance.now();
+      let ended = false;
+      const ZONE_MIN = 38;
+      const ZONE_MAX = 62;
+      const hitStars = el("span", { class: "rb-stars" });
+      const missMarks = el("span", { class: "rb-misses" });
+      const feedback = el("p", { class: "mg-feedback", role: "status" }, "Press BLAST OFF when the needle is in the green zone!");
+      const needle = el("div", { class: "rb-needle", "aria-hidden": "true" });
+      const meter = el(
+        "div",
+        { class: "rb-meter", "aria-label": "Power meter", role: "img" },
+        el("div", { class: "rb-zone" }),
+        needle
+      );
+      const boostBtn = el("button", { type: "button", class: "rb-boost-btn" }, "BLAST OFF!");
+      const skipButton = el("button", { type: "button", class: "mg-skip" }, "Skip (counts as a miss)");
+      const renderHits = () => {
+        hitStars.textContent = `Boosts: ${hits} / ${HITS_NEEDED}`;
+        missMarks.textContent = `Misses: ${misses} / ${MAX_MISSES}`;
+      };
+      renderHits();
+      const root = el(
+        "div",
+        { class: "minigame rocket-boost" },
+        el("h2", { class: "mg-title", tabindex: "-1" }, "Rocket Boost"),
+        el("p", { class: "mg-help" }, `Press BLAST OFF ${HITS_NEEDED} times when the needle lands in the green zone to blast home!`),
+        el("div", { class: "rb-scoreboard" }, hitStars, missMarks),
+        meter,
+        boostBtn,
+        feedback,
+        skipButton
+      );
+      mount(container, root);
+      focusTitle(root);
+      boostBtn.focus();
+      const cleanup = () => {
+        cancelAnimationFrame(frame);
+      };
+      const end = async (result) => {
+        if (ended) return;
+        ended = true;
+        cleanup();
+        boostBtn.disabled = true;
+        skipButton.disabled = true;
+        if (result === "win") {
+          feedback.textContent = `${HITS_NEEDED} perfect boosts! Blasting off - heading HOME!`;
+          sound.win();
+        } else {
+          feedback.textContent = "Too many misses! The engine sputtered out.";
+          sound.lose();
+        }
+        await sleep(TIMING.minigameEndMs);
+        resolve({ result, stats: { hits, misses } });
+      };
+      const tryBoost = () => {
+        if (ended) return;
+        const inZone = needlePos >= ZONE_MIN && needlePos <= ZONE_MAX;
+        if (inZone) {
+          hits += 1;
+          sound.good();
+          needle.classList.add("rb-hit");
+          setTimeout(() => needle.classList.remove("rb-hit"), 300);
+          feedback.textContent = hits < HITS_NEEDED ? `Nice boost! ${HITS_NEEDED - hits} more to go!` : "";
+          renderHits();
+          if (hits >= HITS_NEEDED) end("win");
+        } else {
+          misses += 1;
+          sound.bad();
+          needle.classList.add("rb-miss");
+          setTimeout(() => needle.classList.remove("rb-miss"), 300);
+          feedback.textContent = `Miss! Try again - ${MAX_MISSES - misses} chances left.`;
+          renderHits();
+          if (misses >= MAX_MISSES) end("lose");
+        }
+      };
+      const loop = (now) => {
+        const dt = Math.min(0.1, (now - last) / 1e3);
+        last = now;
+        needlePos += direction * NEEDLE_SPEED * dt;
+        if (needlePos >= 100) {
+          needlePos = 100;
+          direction = -1;
+        }
+        if (needlePos <= 0) {
+          needlePos = 0;
+          direction = 1;
+        }
+        needle.style.left = `${needlePos}%`;
+        if (!ended) frame = requestAnimationFrame(loop);
+      };
+      boostBtn.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        tryBoost();
+      });
+      boostBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          tryBoost();
+        }
+      });
+      document.addEventListener("keydown", function onKey(e) {
+        if (ended) {
+          document.removeEventListener("keydown", onKey);
+          return;
+        }
+        if (e.key === " " && document.activeElement !== boostBtn) {
+          e.preventDefault();
+          tryBoost();
+        }
+      });
+      skipButton.addEventListener("click", () => end("lose"));
+      frame = requestAnimationFrame((now) => {
+        last = now;
+        loop(now);
+      });
+    });
+  }
+
   // src/minigames/types.js
-  var MINIGAME_TYPES = Object.freeze(["manualFlight", "dataCheck"]);
+  var MINIGAME_TYPES = Object.freeze(["manualFlight", "dataCheck", "shieldZap", "rocketBoost"]);
 
   // src/minigames/index.js
   var MINIGAMES = {
     manualFlight: runManualFlight,
-    dataCheck: runDataCheck
+    dataCheck: runDataCheck,
+    shieldZap: runShieldZap,
+    rocketBoost: runRocketBoost
   };
   for (const type of MINIGAME_TYPES) {
     if (!MINIGAMES[type]) throw new Error(`Minigame "${type}" is listed in types.js but not registered`);
@@ -1302,10 +1606,14 @@
         return;
       }
     }
-    const finished = ROUNDS.length >= GAME.totalRounds;
+    const lastRound = ROUNDS[ROUNDS.length - 1];
+    const finished = lastRound.number >= GAME.totalRounds;
     finishScreen({
-      title: finished ? "Mission complete!" : `Round ${ROUNDS.length} complete!`,
-      paragraphs: finished ? ["You made it to Mars. Thank you for playing!"] : [`Round ${ROUNDS.length + 1} of ${GAME.totalRounds} is still being built. Thank you for playing, ${GAME.playerName}!`],
+      title: finished ? "Mission Complete - Welcome Home!" : `Round ${ROUNDS.length} complete!`,
+      paragraphs: finished ? [
+        "You launched from Earth, collected Mars rocks with the rover, survived a solar storm, and blasted safely back home.",
+        `You balanced power, air, and shielding like a real space explorer. Great job, ${GAME.playerName}!`
+      ] : [`Round ${ROUNDS.length + 1} of ${GAME.totalRounds} is still being built. Thank you for playing, ${GAME.playerName}!`],
       retryLabel: "Play again"
     });
   }

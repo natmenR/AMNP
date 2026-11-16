@@ -53,11 +53,17 @@ async function runGame() {
     }
   }
 
-  const finished = ROUNDS.length >= GAME.totalRounds;
+  // The mission is finished when the last round in the array is the designated final round.
+  // This stays correct whether teammates have filled in rounds 2-3 or not.
+  const lastRound = ROUNDS[ROUNDS.length - 1];
+  const finished = lastRound.number >= GAME.totalRounds;
   finishScreen({
-    title: finished ? 'Mission complete!' : `Round ${ROUNDS.length} complete!`,
+    title: finished ? 'Mission Complete - Welcome Home!' : `Round ${ROUNDS.length} complete!`,
     paragraphs: finished
-      ? ['You made it to Mars. Thank you for playing!']
+      ? [
+          'You launched from Earth, collected Mars rocks with the rover, survived a solar storm, and blasted safely back home.',
+          `You balanced power, air, and shielding like a real space explorer. Great job, ${GAME.playerName}!`,
+        ]
       : [`Round ${ROUNDS.length + 1} of ${GAME.totalRounds} is still being built. Thank you for playing, ${GAME.playerName}!`],
     retryLabel: 'Play again',
   });

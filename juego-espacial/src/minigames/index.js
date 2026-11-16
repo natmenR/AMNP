@@ -6,11 +6,15 @@
  */
 import { runDataCheck } from './data-check.js';
 import { runManualFlight } from './flight.js';
+import { runShieldZap } from './shield-zap.js';
+import { runRocketBoost } from './rocket-boost.js';
 import { MINIGAME_TYPES } from './types.js';
 
 const MINIGAMES = {
   manualFlight: runManualFlight,
   dataCheck: runDataCheck,
+  shieldZap: runShieldZap,
+  rocketBoost: runRocketBoost,
 };
 
 // Si agregas un minijuego, añade también su nombre en types.js
