@@ -180,75 +180,152 @@
 
   // src/data/rounds/round-02.js
   var round02 = {
-    id: "round-02",
-    number: 2,
-    title: "Solar Conjunction",
-    speaker: "Ship System",
-    alert: false,
-    report: {
-      liveData: false,
-      pages: [
-        {
-          text: "Later in the mission, your crew is working at the Mars habitat. The Sun is between Earth and Mars, and its outer atmosphere can disturb radio signals. Mission Control has paused new commands for two weeks."
-        }
-      ]
-    },
-    decision: {
-      pages: [
-        {
-          text: "Your instruments and manuals still work. Choose how to keep the base running while Earth is quiet."
-        }
-      ],
-      title: "Round 2",
-      prompt: "How will you help the crew?",
-      options: [
-        {
-          id: "offline-kit",
-          label: "Pack an Offline Kit",
-          minigame: {
-            type: "offlineKit",
-            intro: "You have six storage units. Save the three files the crew will need while the radio is offline."
-          },
-          outcomes: { win: "kit-win", lose: "kit-lose" }
+    id: 'round-02',
+  number: 2,
+  title: 'MARS TERRAIN RECONNAISSANCE',
+  speaker: 'AURA',
+  alert: false,
+
+  report: {
+    liveData: false,
+    pages: [
+      {
+        text: 'MISSION LOG — DAY 980. After months of travel, your crew has reached Mars. The habitat is operational, but the surrounding terrain remains largely unexplored.',
+      },
+      {
+        text: 'AURA: Commander, our orbital maps are incomplete. Rocky formations, unstable ground, and unknown surface conditions could threaten future expeditions.',
+      },
+      {
+        text: 'MISSION CONTROL: Your next objective is to identify three scientific locations and gather enough information to establish a safe exploration route.',
+      },
+      {
+        text: 'AURA: Our rover has limited battery capacity. Every movement, scan, and navigation decision must be carefully planned.',
+      },
+    ],
+  },
+
+  decision: {
+    pages: [
+      {
+        text: 'AURA: I have identified three possible reconnaissance strategies. Each one offers different advantages and risks.',
+      },
+      {
+        text: 'MISSION CONTROL: Choose your approach carefully. Your decision will determine how the crew explores the Martian surface.',
+      },
+    ],
+
+    title: 'Round 2',
+    prompt: 'How will you explore the Martian terrain?',
+
+    options: [
+      {
+        id: 'rocky-shortcut',
+        label: 'A — Rocky Shortcut',
+        minigame: {
+          type: 'marsRoverDrive',
+          intro: 'Drive the rover across the Martian surface. Reach and scan all three scientific sites, manage your battery, and return safely to the habitat.',
         },
-        {
-          id: "habitat-drill",
-          label: "Run the Habitat Drill",
-          minigame: {
-            type: "habitatDrill",
-            intro: "Three alarms need your attention. Read the onboard manual and choose a safe action for each alarm."
-          },
-          outcomes: { win: "drill-win", lose: "drill-lose" }
-        }
-      ]
+        outcomes: {
+          win: 'rover-win',
+          lose: 'rover-lose',
+        },
+      },
+
+      {
+        id: 'surveyed-corridor',
+        label: 'B — Surveyed Corridor',
+        minigame: {
+          type: 'marsRoutePlanner',
+          intro: 'Plan an efficient route between the three scientific sites. Consider terrain costs, available battery, and the safest path back to the habitat.',
+        },
+        outcomes: {
+          win: 'planner-win',
+          lose: 'planner-lose',
+        },
+      },
+
+      {
+        id: 'remote-mapping',
+        label: 'C — Remote Mapping',
+        minigame: {
+          type: 'marsRadarScan',
+          intro: 'Operate the remote radar system. Adjust its orientation, scan the terrain, and classify the detected sectors using a limited number of attempts.',
+        },
+        outcomes: {
+          win: 'radar-win',
+          lose: 'radar-lose',
+        },
+      },
+    ],
+  },
+
+  outcomes: {
+    'rover-win': {
+      tone: 'good',
+      text: 'AURA: Reconnaissance complete. The rover successfully scanned all three scientific sites and returned to the habitat. Your crew now has valuable terrain data for future expeditions.',
+      effects: {
+        energy: -5,
+        lifeSupport: 0,
+        shielding: 0,
+      },
     },
-    outcomes: {
-      "kit-win": {
-        tone: "good",
-        text: "Your crew used the offline files to check the base. When the signal returned, you sent your mission log to Earth.",
-        effects: { energy: -4 }
+
+    'rover-lose': {
+      tone: 'mixed',
+      text: 'AURA: The rover expedition encountered unexpected difficulties. Additional resources were required to recover the mission, and some scientific observations remain incomplete.',
+      effects: {
+        energy: -12,
+        lifeSupport: -3,
+        shielding: 0,
       },
-      "kit-lose": {
-        tone: "mixed",
-        text: "Your kit was missing a key file. The crew used extra energy to search for a backup copy.",
-        effects: { energy: -8 }
-      },
-      "drill-win": {
-        tone: "good",
-        text: "You cleared all three alarms. When the signal returned, you sent Earth a report on the repairs.",
-        effects: { energy: -3 }
-      },
-      "drill-lose": {
-        tone: "mixed",
-        text: "The safety system took over after two wrong actions. The crew stayed safe, but the base used extra energy and oxygen.",
-        effects: { energy: -7, lifeSupport: -5 }
-      }
     },
-    fact: {
-      title: "Based on a true story",
-      text: "During solar conjunction, NASA plans tasks in advance so its Mars rovers can keep working while new radio commands are paused."
-    }
-  };
+
+    'planner-win': {
+      tone: 'good',
+      text: 'MISSION CONTROL: Excellent navigation planning. Your selected route minimized unnecessary movement, allowing the rover to complete its scientific survey while preserving valuable energy.',
+      effects: {
+        energy: -3,
+        lifeSupport: 0,
+        shielding: 0,
+      },
+    },
+
+    'planner-lose': {
+      tone: 'mixed',
+      text: 'AURA: The planned route proved inefficient. The rover consumed additional energy while navigating difficult terrain, forcing the crew to adjust the expedition.',
+      effects: {
+        energy: -10,
+        lifeSupport: -2,
+        shielding: 0,
+      },
+    },
+
+    'radar-win': {
+      tone: 'good',
+      text: 'AURA: Remote terrain analysis complete. The radar successfully identified the relevant surface sectors, allowing the crew to gather scientific information without exposing the rover to hazardous terrain.',
+      effects: {
+        energy: -4,
+        lifeSupport: 0,
+        shielding: 0,
+      },
+    },
+
+    'radar-lose': {
+      tone: 'mixed',
+      text: 'AURA: The radar survey produced incomplete results. Several sectors remain uncertain, and additional scans will be necessary before the crew can safely explore the area.',
+      effects: {
+        energy: -8,
+        lifeSupport: 0,
+        shielding: -3,
+      },
+    },
+  },
+
+  fact: {
+    title: 'Based on a true story',
+    text: 'NASA Mars rovers use onboard navigation systems, cameras, and scientific instruments to investigate the Martian surface. Because communication with Earth involves delays, rovers can perform certain navigation tasks autonomously while mission teams plan their exploration routes.',
+  },
+};
 
   // src/data/rounds/round-04.js
   var round04 = {
